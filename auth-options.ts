@@ -29,9 +29,10 @@ export const authOptions = {
       sendVerificationRequest({
         identifier: email,
         url,
+        token,
         provider,
       }) {
-    
+        return new Promise((resolve, reject) => {
           const { server, from } = provider;
           const transport = nodemailer.createTransport(server);
           const mailOptions = {
@@ -44,9 +45,12 @@ export const authOptions = {
 
           transport.sendMail(mailOptions, (error) => {
             if (error) {
-              throw new Error(error.message)
+              console.error(error);
+              return reject(new Error("SEND_VERIFICATION_EMAIL_ERROR", error));
             }
+            resolve();
           });
+        });
       },
     })
   ],
