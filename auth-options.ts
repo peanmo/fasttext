@@ -44,7 +44,7 @@ export const authOptions = {
 
           transport.sendMail(mailOptions, (error) => {
             if (error) {
-              console.error(error);
+              throw new Error(error.message)
             }
           });
       },
