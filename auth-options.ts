@@ -15,44 +15,48 @@ export const authOptions = {
       clientSecret: process.env.NEXTAUTH_GOOGLE_SECRET as string,
     }),
     EmailProvider({
-      server: {
-        host: "smtp.office365.com",
-        port: 587,
-        auth: {
-          user: "patna.__@hotmail.com",
-          pass: "Sepv&9sv",
-        },
-        secure: false,
-        requireTLS: true,
-      },
-      from: "patna.__@hotmail.com",
-      sendVerificationRequest({
-        identifier: email,
-        url,
-        token,
-        provider,
-      }) {
-        return new Promise((resolve, reject) => {
-          const { server, from } = provider;
-          const transport = nodemailer.createTransport(server);
-          const mailOptions = {
-            to: email,
-            from,
-            subject: "Sign in to your account",
-            text: `Sign in to your account by clicking on the following link: ${url}`,
-            html: `<p>Sign in to your account by clicking on the following link: <a href="${url}">${url}</a></p>`,
-          };
+      server: process.env.NEXTAUTH_EMAIL_SERVER,
+      from: process.env.NEXTAUTH_EMAIL_FROM
+    }),
+    // EmailProvider({
+    //   server: {
+    //     host: "smtp.office365.com",
+    //     port: 587,
+    //     auth: {
+    //       user: "patna.__@hotmail.com",
+    //       pass: "Sepv&9sv",
+    //     },
+    //     secure: false,
+    //     requireTLS: true,
+    //   },
+    //   from: "patna.__@hotmail.com",
+    //   sendVerificationRequest({
+    //     identifier: email,
+    //     url,
+    //     token,
+    //     provider,
+    //   }) {
+    //     return new Promise((resolve, reject) => {
+    //       const { server, from } = provider;
+    //       const transport = nodemailer.createTransport(server);
+    //       const mailOptions = {
+    //         to: email,
+    //         from,
+    //         subject: "Sign in to your account",
+    //         text: `Sign in to your account by clicking on the following link: ${url}`,
+    //         html: `<p>Sign in to your account by clicking on the following link: <a href="${url}">${url}</a></p>`,
+    //       };
 
-          transport.sendMail(mailOptions, (error) => {
-            if (error) {
-              console.error(error);
-              return reject(new Error("SEND_VERIFICATION_EMAIL_ERROR", error));
-            }
-            resolve();
-          });
-        });
-      },
-    })
+    //       transport.sendMail(mailOptions, (error) => {
+    //         if (error) {
+    //           console.error(error);
+    //           return reject(new Error("SEND_VERIFICATION_EMAIL_ERROR", error));
+    //         }
+    //         resolve();
+    //       });
+    //     });
+    //   },
+    // })
   ],
   adapter: PrismaAdapter(prisma),
   // callbacks: {
