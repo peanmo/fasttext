@@ -2,6 +2,7 @@ import GoogleProvider from "next-auth/providers/google"
 import EmailProvider from "next-auth/providers/email"
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import { PrismaClient } from "@prisma/client"
+import nodemailer from "nodemailer"
 
 
 const prisma = new PrismaClient()
@@ -25,6 +26,28 @@ export const authOptions = {
         requireTLS: true,
       },
       from: "patna.__@hotmail.com",
+      sendVerificationRequest({
+        identifier: email,
+        url,
+        provider,
+      }) {
+    
+          const { server, from } = provider;
+          const transport = nodemailer.createTransport(server);
+          const mailOptions = {
+            to: email,
+            from,
+            subject: "Sign in to your account",
+            text: `Sign in to your account by clicking on the following link: ${url}`,
+            html: `<p>Sign in to your account by clicking on the following link: <a href="${url}">${url}</a></p>`,
+          };
+
+          transport.sendMail(mailOptions, (error) => {
+            if (error) {
+              console.error(error);
+            }
+          });
+      },
     })
   ],
   adapter: PrismaAdapter(prisma),
