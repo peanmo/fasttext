@@ -1,96 +1,65 @@
 import GoogleProvider from "next-auth/providers/google"
 import EmailProvider from "next-auth/providers/email"
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
-import { PrismaClient } from "@prisma/client"
+import { PrismaClient, User } from "@prisma/client"
+import { Session } from "next-auth"
+import CredentialsProvider from "next-auth/providers/credentials";
 import nodemailer from "nodemailer"
+import bcrypt from "bcrypt"
+import { AdapterUser } from "next-auth/adapters";
+import { JWT } from "next-auth/jwt";
 
 
 const prisma = new PrismaClient()
 
 export const authOptions = {
   providers: [
-    GoogleProvider({
-      name: "google",
-      clientId: process.env.NEXTAUTH_GOOGLE_ID as string,
-      clientSecret: process.env.NEXTAUTH_GOOGLE_SECRET as string,
-    }),
-    EmailProvider({
-      server: process.env.NEXTAUTH_EMAIL_SERVER,
-      from: process.env.NEXTAUTH_EMAIL_FROM
-    }),
-    // EmailProvider({
-    //   server: {
-    //     host: "smtp.office365.com",
-    //     port: 587,
-    //     auth: {
-    //       user: "patna.__@hotmail.com",
-    //       pass: "Sepv&9sv",
-    //     },
-    //     secure: false,
-    //     requireTLS: true,
-    //   },
-    //   from: "patna.__@hotmail.com",
-    //   sendVerificationRequest({
-    //     identifier: email,
-    //     url,
-    //     token,
-    //     provider,
-    //   }) {
-    //     return new Promise((resolve, reject) => {
-    //       const { server, from } = provider;
-    //       const transport = nodemailer.createTransport(server);
-    //       const mailOptions = {
-    //         to: email,
-    //         from,
-    //         subject: "Sign in to your account",
-    //         text: `Sign in to your account by clicking on the following link: ${url}`,
-    //         html: `<p>Sign in to your account by clicking on the following link: <a href="${url}">${url}</a></p>`,
-    //       };
+    CredentialsProvider({
+      name: "Credentials",
+      credentials: {
+        username: { label: "รหัสพนักงาน", type: "text", placeholder: "เช่น: 501855" },
+        password: { label: "รหัสผ่าน", type: "password", placeholder: "รหัสผ่านเริ่มต้น 87654321" }
+      },
+      async authorize(credentials, req) {
+        if(!credentials){
+          return null
+        }
+        const resultFindUser = await prisma.user.findUnique({
+          where: {
+            user: credentials.username,
+          },
+          // select: {
+          //   id: true,
+          //   user: true,
+          //   hashedPassword: true,
+          //   name: true
+          // },
+        });
+  
+        if (!resultFindUser || !resultFindUser.hashedPassword || !resultFindUser.name || !(await bcrypt.compare(credentials.password, resultFindUser.hashedPassword))) {
+        
+          return null
+        } 
 
-    //       transport.sendMail(mailOptions, (error) => {
-    //         if (error) {
-    //           console.error(error);
-    //           return reject(new Error("SEND_VERIFICATION_EMAIL_ERROR", error));
-    //         }
-    //         resolve();
-    //       });
-    //     });
-    //   },
-    // })
+         return resultFindUser
+      }
+    })
   ],
-  adapter: PrismaAdapter(prisma),
+  session: {
+    strategy: 'jwt' as const,
+  },
   // callbacks: {
-  //   session: async ({
-  //     session,
-  //     user,
-  //     newSession,
-  //     trigger,
-  //   }: {
-  //     session: Session;
-  //     user: AdapterUser;
-  //     newSession: any;
-  //     trigger?: "update";
-  //   }) => {
-  //     if (trigger && newSession.name && adapter.updateUser) {
+  //   jwt: async ({ token, user }:{token:JWT, user:User | AdapterUser}) => {
+  //     if (user) {
+  //       token.name = user.name
   //     }
-  //     if (!session.user) {
-  //       return session;
-  //     }
-  //     session.user = user;
-  //     return session;
+  //     return token
   //   },
-  //   signIn: async ({ user }: { user: AdapterUser | User }) => {
-  //     if (!adapter.getUser || !adapter.updateUser) {
-  //       return true;
+  //   session: async ({ session, token }:{session: Session,token:JWT}) => {
+  //     if (session.user) {
+  //       session.
   //     }
-  //     if (!user.role) {
-  //       const update: Partial<AdapterUser> & Pick<AdapterUser, "id"> = {
-  //         role: "user",
-  //         id: user.id,
-  //       };
-  //       await adapter.updateUser(update);
-  //     }
-  //     return true;
-  //   },
+  //     return session
+  //   }
   // },
 };
