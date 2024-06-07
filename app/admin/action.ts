@@ -16,8 +16,8 @@ export async function createUser(prevState: any, formData: FormData) {
         message: "กรุณากรอกชื่อ-สกุล"
     }
   }
-  const section = formData.get('section')?.toString()
-  if(!section){
+  const sectionId = formData.get('sectionId')?.toString()
+  if(!sectionId){
     return {
         message: "กรุณากรอกสังกัด"
     }
@@ -33,15 +33,40 @@ export async function createUser(prevState: any, formData: FormData) {
     data:{
         user, 
         name,
-        section,
         tel,
-        hashedPassword: await bcrypt.hash("87654321", 12)
+        hashedPassword: await bcrypt.hash("87654321", 12),
+        sectionId
     }
   })
-
-  console.log(result)
 
   return {
     message: 'ลงทะเบียนสำเร็จ',
   }
+}
+
+export async function createSection(prevState: any, formData: FormData) {
+  const name = formData.get('name')?.toString()
+  if(!name){
+    return {
+        message: "กรุณากรอกชื่อแผนก"
+    }
+  }
+  const shortName = formData.get('shortName')?.toString()
+  if(!shortName){
+    return {
+        message: "กรุณากรอกตัวย่อแผนก"
+    }
+  }
+
+  const result = await prisma.section.create({
+    data:{
+        name,
+        shortName
+    }
+  })
+
+  return {
+    message: 'เพิ่มแผนกสำเร็จ',
+  }
+
 }
