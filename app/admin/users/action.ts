@@ -1,6 +1,7 @@
 'use server'
 
 import prisma from "@/lib/prisma"
+import { User } from "@prisma/client";
 import bcrypt from 'bcrypt';
  
 export async function createUser(prevState: any, formData: FormData) {
@@ -29,44 +30,25 @@ export async function createUser(prevState: any, formData: FormData) {
     }
   }
 
+  const role = formData.get('role')?.toString()
+  if(!role || !["admin","checker","user","manager"].includes(role)){
+    return {
+        message: "กรุณาเลือกประเภทผู้ใช้งาน"
+    }
+  }
+
   const result = await prisma.user.create({
     data:{
         user, 
         name,
         tel,
+        role: role as "admin"|"checker"|"user"|"manager",
         hashedPassword: await bcrypt.hash("87654321", 12),
-        sectionId
+        sectionId,
     }
   })
 
   return {
     message: 'ลงทะเบียนสำเร็จ',
   }
-}
-
-export async function createSection(prevState: any, formData: FormData) {
-  const name = formData.get('name')?.toString()
-  if(!name){
-    return {
-        message: "กรุณากรอกชื่อแผนก"
-    }
-  }
-  const shortName = formData.get('shortName')?.toString()
-  if(!shortName){
-    return {
-        message: "กรุณากรอกตัวย่อแผนก"
-    }
-  }
-
-  const result = await prisma.section.create({
-    data:{
-        name,
-        shortName
-    }
-  })
-
-  return {
-    message: 'เพิ่มแผนกสำเร็จ',
-  }
-
 }

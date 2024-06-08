@@ -1,5 +1,5 @@
 import prisma from "@/lib/prisma"
-import AddUser from "./add-users"
+import UserManagement from "./users"
 
 export default async function Page(){
     const sections = await prisma.section.findMany({
@@ -10,7 +10,7 @@ export default async function Page(){
         }
     })
     return (
-        <AddUser sections={sections} />
+        <UserManagement sections={sections} />
     )
     
 }
