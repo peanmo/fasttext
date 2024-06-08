@@ -2,3 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+/* รีเซ็ตค่า base พื้นฐาน */
+@layer base {
+  html,
+  body {
+    @apply text-base leading-normal text-black bg-white;
+  }
+
+  /* เพิ่มรีเซ็ตค่าอื่นๆ ตามที่ต้องการ */
+}

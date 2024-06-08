@@ -3,7 +3,7 @@ import prisma from "@/lib/prisma"
 import { getServerSession } from "next-auth"
 
 
-export default async function Page(){
+export default async function Page({ params }: { params: { type: string } }){
 
     const session = await getServerSession(authOptions)
     console.log(session)
@@ -13,7 +13,7 @@ export default async function Page(){
    
     return (
         <div>
-        จัดซื้อจัดจ้าง รับ type
+        จัดซื้อจัดจ้าง รับ {params.type}
         </div>
     )
     
