@@ -7,7 +7,7 @@ const initialState = {
     message: '',
   }
 
-export default function AddUser({sections}:{sections:{id:string,name:string,shortName:string}[]}){
+export default function SectionsManager({sections}:{sections:{id:string,name:string,shortName:string}[]}){
     const [addSectionState, formAddSectionAction] = useFormState(createSection, initialState)
     return (
         <main className="flex min-h-screen flex-col items-center p-24 bg-slate-300">

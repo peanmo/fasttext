@@ -15,19 +15,41 @@ enum Role {
 }
 
 model User {
-    id             String  @id @default(auto()) @map("_id") @db.ObjectId
+    id             String     @id @default(auto()) @map("_id") @db.ObjectId
     hashedPassword String
     name           String
-    user           String  @unique
+    user           String     @unique
     tel            String
     role           Role
-    sectionId      String  @db.ObjectId
-    section        Section @relation(fields: [sectionId], references: [id])
+    sectionId      String     @db.ObjectId
+    section        Section    @relation(fields: [sectionId], references: [id])
+    Document       Document[]
 }
 
 model Section {
-    id        String @id @default(auto()) @map("_id") @db.ObjectId
+    id        String     @id @default(auto()) @map("_id") @db.ObjectId
     shortName String
     name      String
     users     User[]
+    document  Document[]
+}
+
+model Document {
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    name      String
+    amount    String
+    note      String
+    userId    String   @db.ObjectId
+    user      User     @relation(fields: [userId], references: [id])
+    sectionId String   @db.ObjectId
+    section   Section  @relation(fields: [sectionId], references: [id])
+    status    Status[]
+}
+
+model Status {
+    id         String   @id @default(auto()) @map("_id") @db.ObjectId
+    name       String
+    date       DateTime
+    document   Document @relation(fields: [documentId], references: [id])
+    documentId String   @db.ObjectId
 }

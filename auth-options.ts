@@ -1,12 +1,7 @@
-import GoogleProvider from "next-auth/providers/google"
-import EmailProvider from "next-auth/providers/email"
-import { PrismaAdapter } from "@next-auth/prisma-adapter"
-import { PrismaClient, User } from "@prisma/client"
-import { Session } from "next-auth"
+import { PrismaClient } from "@prisma/client"
+import { Session, User } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials";
-import nodemailer from "nodemailer"
 import bcrypt from "bcrypt"
-import { AdapterUser } from "next-auth/adapters";
 import { JWT } from "next-auth/jwt";
 
 
@@ -28,38 +23,40 @@ export const authOptions = {
           where: {
             user: credentials.username,
           },
-          // select: {
-          //   id: true,
-          //   user: true,
-          //   hashedPassword: true,
-          //   name: true
-          // },
+          select: {
+            id: true,
+            user: true,
+            hashedPassword: true,
+            name: true,
+            tel: true,
+            section: true,
+            role: true
+          },
         });
   
         if (!resultFindUser || !resultFindUser.hashedPassword || !resultFindUser.name || !(await bcrypt.compare(credentials.password, resultFindUser.hashedPassword))) {
         
           return null
         } 
+        const {id,name,user,tel,role,section} = resultFindUser
 
-         return resultFindUser
+         return {id,name,user,tel,role,section}
       }
     })
   ],
   session: {
     strategy: 'jwt' as const,
   },
-  // callbacks: {
-  //   jwt: async ({ token, user }:{token:JWT, user:User | AdapterUser}) => {
-  //     if (user) {
-  //       token.name = user.name
-  //     }
-  //     return token
-  //   },
-  //   session: async ({ session, token }:{session: Session,token:JWT}) => {
-  //     if (session.user) {
-  //       session.
-  //     }
-  //     return session
-  //   }
-  // },
+  callbacks: {
+    jwt: async ({ token, user }:{token:JWT, user:User}) => {
+      if (user) {
+        token.pea = user
+      }
+      return token
+    },
+    session: async ({ session, token }:{session: Session,token:JWT}) => {
+      session.pea = token.pea
+      return session
+    }
+  },
 };
