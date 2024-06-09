@@ -2,6 +2,7 @@
 
 import { authOptions } from '@/auth-options';
 import { PrismaClient } from '@prisma/client';
+import { error } from 'console';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 
@@ -12,11 +13,7 @@ function getCurrentThaiYear(): number {
     return currentYear + 543; // เปลี่ยนปีคริสต์ศักราชเป็นปีพุทธศักราช
   }
 
-export async function addDocument() {
-    const session = await getServerSession(authOptions)
-    if(!session || !session.pea){
-        redirect("/api/auth/signin")
-    }
+async function getLastestDocNumber() {
   const currentYear = getCurrentThaiYear();
   const yearSuffix = currentYear.toString();
 
@@ -40,14 +37,59 @@ export async function addDocument() {
 
   const formattedDocNo = `${newDocNo}/${yearSuffix}`;
 
+  return formattedDocNo
+}
+
+
+export async function addDocument(prevState: {message: string, err: boolean}, formData: FormData) {
+  const session = await getServerSession(authOptions)
+  if(!session || !session.pea){
+      redirect("/api/auth/signin")
+  }
+
+  console.log(formData)
+
+  const type = formData.get("type")?.toString()
+  console.log(type)
+  if(!type){
+    return {
+      message: "กรุณาใส่ประเภทเอกสาร",
+      err: true
+    }
+  }
+
+  const name = formData.get("name")?.toString()
+  if(!name){
+    return {
+      message: "กรุณาใส่ชื่อเอกสาร",
+      err: true
+    }
+  }
+  let note = formData.get("note")?.toString()
+  if(!note){
+    note = "-"
+  }
+
+  const amountStr = formData.get("amount")?.toString()
+  if(!amountStr || !/^\d+(\.\d{1,2})?$/.test(amountStr)){
+    return {
+      message: "กรุณาใส่จำนวนเงินให้ถูกต้อง (ไม่มีลูกน้ำ และทศนิยมไม่เกิน 2 ตำแหน่ง)",
+      err: true
+    }
+  }
+
+  let amount = parseFloat(amountStr)
+
   const data = {
-    type: 'Test',
-    name: 'เอกสารใหม่',
-    note: "ทดสอบเอกสารใหม่",
-    amount: 1000.0,
+    type,
+    name,
+    note,
+    amount,
     userId: session.pea.id,
     fromSectionId: session.pea.section.id,
   }
+
+  const formattedDocNo = await getLastestDocNumber()
 
   // สร้างเอกสารใหม่
   const newDocument = await prisma.document.create({
@@ -57,18 +99,17 @@ export async function addDocument() {
     },
   });
 
-  console.log(newDocument)
-
   const newStatus = await prisma.status.create({
     data: {
         name: "รอเอกสารต้นฉบับ",
         date: new Date(),
         documentId: newDocument.id,
-        updatedByUserId: session.pea.user
+        updatedByUserId: session.pea.id
     }
   })
-
-  console.log(newStatus)
-    
+  return {
+    message: newDocument.docNo,
+    err: false
+  }
 }
 
