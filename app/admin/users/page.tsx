@@ -16,8 +16,18 @@ export default async function Page(){
             shortName: true
         }
     })
+
+    const users = await prisma.user.findMany({
+        select : {
+            id: true,
+            user: true,
+            name: true,
+            suspend: true,
+            role: true
+        }
+    })
     return (
-        <UserManagement sections={sections} />
+        <UserManagement sections={sections} users={users} />
     )
     
 }
