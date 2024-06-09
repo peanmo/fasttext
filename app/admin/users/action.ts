@@ -11,6 +11,16 @@ export async function createUser(prevState: any, formData: FormData) {
         message: "กรุณากรอกรูปแบบพนักงานให้ถูกต้อง"
     }
   }
+  const findUser = await prisma.user.findFirst({
+    where: {
+      user
+    }
+  })
+  if(user){
+    return {
+      message: "มีรหัสพนักงานนี้อยู่แล้ว"
+    }
+  }
   const name = formData.get('name')?.toString()
   if(!name){
     return {

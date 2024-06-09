@@ -30,11 +30,12 @@ export const authOptions = {
             name: true,
             tel: true,
             section: true,
-            role: true
+            role: true,
+            suspend: true
           },
         });
-  
-        if (!resultFindUser || !resultFindUser.hashedPassword || !resultFindUser.name || !(await bcrypt.compare(credentials.password, resultFindUser.hashedPassword))) {
+
+        if (!resultFindUser || !resultFindUser.hashedPassword || !resultFindUser.name || resultFindUser.suspend || !(await bcrypt.compare(credentials.password, resultFindUser.hashedPassword))) {
         
           return null
         } 
