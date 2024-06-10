@@ -1,5 +1,6 @@
 import prisma from "@/lib/prisma"
 import Link from "next/link";
+import ResetState from "./reset-state";
 
 
 export default async function Test(){
@@ -9,12 +10,8 @@ export default async function Test(){
             user: true,
             name: true,
             amount: true,
-            status: {
-                select : {
-                    name: true,
-                    date: true
-                }
-            }
+            status: true,
+            nextStatus: true
         }
     })
     const documentsWithLatestStatus = documents.map(doc => {
@@ -32,12 +29,16 @@ export default async function Test(){
             ทดสอบ
             {documentsWithLatestStatus.map((val)=>{
                 return (
-                    <Link key={val.id} href={`/history/${val.id}`} className="flex flex-row justify-between">
-                        <span>{val.user.name}</span>
-                        <span>{val.name}</span>
-                        <span>{val.amount}</span>
-                        <span>{val.status.name}</span>
-                    </Link>
+                    <div key={val.id} className="flex flex-row justify-between">
+                        <Link  href={`/history/${val.id}`} className="flex flex-row justify-between">
+                            <span>{val.user.name}</span>
+                            <span>{val.name}</span>
+                            <span>{val.amount}</span>
+                            <span>{val.status.name}</span>
+                            
+                        </Link>
+                        <ResetState documentId={val.id} currentStatus={val.status}/>
+                    </div>
                 )
             })}
             

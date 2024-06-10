@@ -1,17 +1,20 @@
+import { $Enums, NextStatus, Status } from "@prisma/client"
+import prisma from "./prisma"
+import { Document } from "@prisma/client"
 export type ChangeStatus = {
     name: string
-    roles: ("user"|"manager"|"checker"|"admin")[]
-    specific: boolean
+    role?: $Enums.Role
+    specific?: string
 }
 
-export function nextStatusList(status:string,role:"user"|"manager"|"checker"|"admin"){
-    let lists = nextStatusMap.get(status)
+export function getNextStatusArr(current: string){
+    let lists = nextStatusMap.get(current)
     if(!lists){
         return []
     }
     let listObjs : ChangeStatus[] = []
     for (const o of lists){
-        o&&o.roles.includes(role)&&listObjs.push(o)
+        o&&listObjs.push(o)
     }
     return listObjs
 }
@@ -19,60 +22,47 @@ export function nextStatusList(status:string,role:"user"|"manager"|"checker"|"ad
 export const allStatusList : ChangeStatus[] = [
     {
         name: "รอเอกสารต้นฉบับ",
-        roles: ["user","manager","checker","admin"],
-        specific: true,
+        specific: "รอเอกสารต้นฉบับ"
     },{
         name: "รับเอกสารต้นฉบับ",
-        roles: ["checker","admin"],
-        specific: false,
+        role: "checker",
     },{
         name: "กำลังตรวจสอบเอกสาร",
-        roles: ["checker","admin"],
-        specific: true,
+        specific: "รับเอกสารต้นฉบับ",
     },{
         name: "เอกสารตรวจสอบผ่านเรียบร้อย",
-        roles: ["checker","admin"],
-        specific: true,
+        specific: "รับเอกสารต้นฉบับ",
     },{
         name: "เอกสารตรวจไม่ผ่าน",
-        roles: ["checker","admin"],
-        specific: true,
+        specific: "รับเอกสารต้นฉบับ",
     },{
         name: "เอกสารส่งคืน/ตีกลับ",
-        roles: ["checker","admin"],
-        specific: true,
+        specific: "รับเอกสารต้นฉบับ",
     },{
         name: "กำลังดำเนินการเข้าระบบ",
-        roles: ["checker","admin"],
-        specific: false,
+        role: "checker",
     },{
         name: "ดำเนินการประมวลผลในระบบ SAP",
-        roles: ["checker","admin"],
-        specific: true,
+        specific: "กำลังดำเนินการเข้าระบบ",
     },{
         name: "พบปัญหาในระบบ SAP",
-        roles: ["checker","admin"],
-        specific: true,
+        specific: "กำลังดำเนินการเข้าระบบ",
     },{
         name: "ใบสำคัญจ่ายรอเสนอ หผ./ผจก.",
-        roles: ["checker","admin"],
-        specific: true,
+        specific: "กำลังดำเนินการเข้าระบบ",
     },{
         name: "ใบสำคัญจ่ายรอเบิกจ่ายเงินสด/เช็ค",
-        roles: ["manager"],
-        specific: false,
+        role: "manager",
     },{
         name: "เบิกจ่ายเสร็จสิ้น",
-        roles: ["checker","admin"],
-        specific: false,
+        role: "checker",
     },{
         name: "ยกเลิก",
-        roles: ["checker","admin"],
-        specific: false,
+        role: "admin"
     },
 ]
 
-const nextStatusMap = new Map([
+export const nextStatusMap = new Map([
     ["รอเอกสารต้นฉบับ",[allStatusList.find(o => o.name == 'รับเอกสารต้นฉบับ'),allStatusList.find(o => o.name == 'ยกเลิก')]],
     ["รับเอกสารต้นฉบับ",[allStatusList.find(o => o.name == 'กำลังตรวจสอบเอกสาร'),allStatusList.find(o => o.name == 'ยกเลิก')]],
     ["กำลังตรวจสอบเอกสาร",[allStatusList.find(o => o.name == 'เอกสารตรวจไม่ผ่าน'),allStatusList.find(o => o.name == 'เอกสารตรวจสอบผ่านเรียบร้อย'),allStatusList.find(o => o.name == 'ยกเลิก')]],
@@ -86,3 +76,37 @@ const nextStatusMap = new Map([
     ["ใบสำคัญจ่ายรอเบิกจ่ายเงินสด/เช็ค",[allStatusList.find(o => o.name == 'เบิกจ่ายเสร็จสิ้น'),allStatusList.find(o => o.name == 'ยกเลิก')]],
     ["เบิกจ่ายเสร็จสิ้น",[allStatusList.find(o => o.name == 'ยกเลิก')]],
 ])
+
+export async function setNextStatusState(document:Partial<Document> & {status: Status[], nextStatus: NextStatus[]},status:Status){
+    await prisma.nextStatus.deleteMany({
+        where: {
+          documentId: document.id
+        }
+    })
+    const nextStatusArr = getNextStatusArr(status.name)
+    for(const n of nextStatusArr){
+        if(n.role){
+          const data = {
+            name: n.name,
+            role: n.role,
+            documentId: status.documentId
+          }
+          await prisma.nextStatus.create({
+            data
+          })
+        }
+        else if(n.specific){
+          const obj = document.status.find(o => o.name == n.specific)
+          if(obj){
+            const data = {
+              name: n.name,
+              userId : obj.updatedByUserId,
+              documentId : status.documentId
+            }
+            await prisma.nextStatus.create({
+              data
+            })
+          }
+        }
+      }
+}

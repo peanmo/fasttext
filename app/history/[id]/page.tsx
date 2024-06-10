@@ -1,9 +1,10 @@
 import { authOptions } from "@/auth-options"
 import prisma from "@/lib/prisma"
-import { nextStatusList } from "@/lib/status-state"
 import { getServerSession } from "next-auth"
 import { redirect } from "next/navigation"
 import ChangeStatus from "./change-status"
+import { setNextStatusState } from "@/lib/status-state"
+import { NextStatus } from "@prisma/client"
 
 async function getDocument(id: string){
     const document = await prisma.document.findFirst({
@@ -38,7 +39,8 @@ async function getDocument(id: string){
                 select : {
                     name: true,
                 }
-            }
+            },
+            nextStatus: true
         }
     })
     return document
@@ -58,7 +60,12 @@ export default async function Page({ params }: { params: { id: string } }){
                 <div>ไม่พบเอกสาร</div>
             )
         }
-        const nextStatuses = nextStatusList(document.status[0].name,session.pea.role)
+        let nextStatuses:NextStatus[] = []
+        for(const n of document.nextStatus){
+            if(n.userId == session.pea.id || n.role == session.pea.role){
+                nextStatuses.push(n)
+            }
+        }
         return (
             <div className="flex flex-col gap-1 p-3">
                 <span>{document.docNo}</span>

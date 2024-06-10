@@ -1,8 +1,8 @@
 "use server"
 
 import { authOptions } from '@/auth-options';
+import { setNextStatusState } from '@/lib/status-state';
 import { PrismaClient } from '@prisma/client';
-import { error } from 'console';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 
@@ -47,10 +47,7 @@ export async function addDocument(prevState: {message: string, err: boolean}, fo
       redirect("/api/auth/signin")
   }
 
-  console.log(formData)
-
   const type = formData.get("type")?.toString()
-  console.log(type)
   if(!type){
     return {
       message: "กรุณาใส่ประเภทเอกสาร",
@@ -97,6 +94,12 @@ export async function addDocument(prevState: {message: string, err: boolean}, fo
       ...data,
       docNo: formattedDocNo,
     },
+    select: {
+      nextStatus: true,
+      status:true,
+      id: true,
+      docNo: true
+    }
   });
 
   const newStatus = await prisma.status.create({
@@ -107,6 +110,8 @@ export async function addDocument(prevState: {message: string, err: boolean}, fo
         updatedByUserId: session.pea.id
     }
   })
+
+  await setNextStatusState(newDocument,newStatus)
   return {
     message: newDocument.docNo,
     err: false

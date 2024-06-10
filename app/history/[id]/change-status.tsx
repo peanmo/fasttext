@@ -1,11 +1,10 @@
 "use client"
-
-import { ChangeStatus } from "@/lib/status-state"
 import { ChangeEvent } from "react"
 import { changeStatus } from "./action"
 import { useRouter } from "next/navigation"
+import { NextStatus } from "@prisma/client"
 
-export default function ChangeStatus({nextStatuses,documentId}:{nextStatuses:ChangeStatus[],documentId:string}){
+export default function ChangeStatus({nextStatuses,documentId}:{nextStatuses:NextStatus[],documentId:string}){
 
     const router = useRouter()
 
