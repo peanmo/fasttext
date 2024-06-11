@@ -17,7 +17,6 @@ export default async function Page({ params }: { params: { type: string } }){
    
     return (
         <div>
-        จัดซื้อจัดจ้าง รับ {params.type}
         <FormDocument session={session} type={params.type} />
         </div>
     )
