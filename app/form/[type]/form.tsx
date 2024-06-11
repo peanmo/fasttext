@@ -5,6 +5,7 @@ import { useFormState } from "react-dom";
 import { useRef } from "react";
 import { addDocument } from "./action";
 import { redirect } from "next/navigation";
+import Swal from "sweetalert2";
 
 const initialState = {
   message: "",
@@ -38,6 +39,14 @@ export default function FormDocument({
     if (formRef.current) {
       formRef.current.reset(); // รีเซ็ตฟอร์มโดยใช้ ref
     }
+
+    Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "บันทึกข้อมูลเรียบร้อย",
+      showConfirmButton: false,
+      timer: 3000,
+    });
   };
 
   const displayType = typeMapping[type] || type;
