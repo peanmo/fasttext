@@ -15,18 +15,17 @@ enum Role {
 }
 
 model User {
-    id             String       @id @default(auto()) @map("_id") @db.ObjectId
+    id             String     @id @default(auto()) @map("_id") @db.ObjectId
     hashedPassword String
     name           String
-    user           String       @unique
+    user           String     @unique
     tel            String
-    suspend        Boolean      @default(false)
+    suspend        Boolean    @default(false)
     role           Role
-    sectionId      String       @db.ObjectId
-    section        Section      @relation(fields: [sectionId], references: [id])
+    sectionId      String     @db.ObjectId
+    section        Section    @relation(fields: [sectionId], references: [id])
     documents      Document[]
     status         Status[]
-    nextStatus     NextStatus[]
 }
 
 model Section {
@@ -38,18 +37,17 @@ model Section {
 }
 
 model Document {
-    id            String       @id @default(auto()) @map("_id") @db.ObjectId
+    id            String   @id @default(auto()) @map("_id") @db.ObjectId
     docNo         String
     type          String
     name          String
     amount        Float
-    note          String       @default("-")
-    userId        String       @db.ObjectId
-    user          User         @relation(fields: [userId], references: [id])
-    fromSectionId String       @db.ObjectId
-    fromSection   Section      @relation(fields: [fromSectionId], references: [id])
+    note          String   @default("-")
+    userId        String   @db.ObjectId
+    user          User     @relation(fields: [userId], references: [id])
+    fromSectionId String   @db.ObjectId
+    fromSection   Section  @relation(fields: [fromSectionId], references: [id])
     status        Status[]
-    nextStatus    NextStatus[]
 }
 
 model Status {
@@ -61,14 +59,4 @@ model Status {
     documentId      String   @db.ObjectId
     updatedByUserId String   @db.ObjectId
     updatedByUser   User     @relation(fields: [updatedByUserId], references: [id])
-}
-
-model NextStatus {
-    id         String   @id @default(auto()) @map("_id") @db.ObjectId
-    name       String
-    role       Role?
-    userId     String?  @db.ObjectId
-    user       User?    @relation(fields: [userId], references: [id])
-    document   Document @relation(fields: [documentId], references: [id])
-    documentId String   @db.ObjectId
 }

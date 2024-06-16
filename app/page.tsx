@@ -9,8 +9,11 @@ export default async function Home(){
             user: true,
             name: true,
             amount: true,
-            status: true,
-            nextStatus: true
+            status: {
+                orderBy: {
+                    date: "desc"
+                }
+            }
         }
     })
     const documentsWithLatestStatus = documents.map(doc => {

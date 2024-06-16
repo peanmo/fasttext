@@ -1,6 +1,5 @@
 import prisma from "@/lib/prisma"
 import Link from "next/link";
-import ResetState from "./reset-state";
 
 
 export default async function Test(){
@@ -11,7 +10,6 @@ export default async function Test(){
             name: true,
             amount: true,
             status: true,
-            nextStatus: true
         }
     })
     const documentsWithLatestStatus = documents.map(doc => {
@@ -37,7 +35,6 @@ export default async function Test(){
                             <span>{val.status.name}</span>
                             
                         </Link>
-                        <ResetState documentId={val.id} currentStatus={val.status}/>
                     </div>
                 )
             })}

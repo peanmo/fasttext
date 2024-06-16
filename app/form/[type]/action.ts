@@ -1,7 +1,6 @@
 "use server"
 
 import { authOptions } from '@/auth-options';
-import { setNextStatusState } from '@/lib/status-state';
 import { PrismaClient } from '@prisma/client';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
@@ -95,7 +94,6 @@ export async function addDocument(prevState: {message: string, err: boolean}, fo
       docNo: formattedDocNo,
     },
     select: {
-      nextStatus: true,
       status:true,
       id: true,
       docNo: true
@@ -110,11 +108,9 @@ export async function addDocument(prevState: {message: string, err: boolean}, fo
         updatedByUserId: session.pea.id
     }
   })
-
-  await setNextStatusState(newDocument,newStatus)
   return {
-    message: newDocument.docNo,
-    err: false
+    err: false,
+    message: "สร้างเอกสารสำเร็จ"
   }
 }
 

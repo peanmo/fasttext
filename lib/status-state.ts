@@ -1,4 +1,4 @@
-import { $Enums, NextStatus, Status } from "@prisma/client"
+import { $Enums, Status } from "@prisma/client"
 import prisma from "./prisma"
 import { Document } from "@prisma/client"
 export type ChangeStatus = {
@@ -77,36 +77,36 @@ export const nextStatusMap = new Map([
     ["เบิกจ่ายเสร็จสิ้น",[allStatusList.find(o => o.name == 'ยกเลิก')]],
 ])
 
-export async function setNextStatusState(document:Partial<Document> & {status: Status[], nextStatus: NextStatus[]},status:Status){
-    await prisma.nextStatus.deleteMany({
-        where: {
-          documentId: document.id
-        }
-    })
-    const nextStatusArr = getNextStatusArr(status.name)
-    for(const n of nextStatusArr){
-        if(n.role){
-          const data = {
-            name: n.name,
-            role: n.role,
-            documentId: status.documentId
-          }
-          await prisma.nextStatus.create({
-            data
-          })
-        }
-        else if(n.specific){
-          const obj = document.status.find(o => o.name == n.specific)
-          if(obj){
-            const data = {
-              name: n.name,
-              userId : obj.updatedByUserId,
-              documentId : status.documentId
-            }
-            await prisma.nextStatus.create({
-              data
-            })
-          }
-        }
-      }
-}
+// export async function setNextStatusState(document:Partial<Document> & {status: Status[], nextStatus: NextStatus[]},status:Status){
+//     await prisma.nextStatus.deleteMany({
+//         where: {
+//           documentId: document.id
+//         }
+//     })
+//     const nextStatusArr = getNextStatusArr(status.name)
+//     for(const n of nextStatusArr){
+//         if(n.role){
+//           const data = {
+//             name: n.name,
+//             role: n.role,
+//             documentId: status.documentId
+//           }
+//           await prisma.nextStatus.create({
+//             data
+//           })
+//         }
+//         else if(n.specific){
+//           const obj = document.status.find(o => o.name == n.specific)
+//           if(obj){
+//             const data = {
+//               name: n.name,
+//               userId : obj.updatedByUserId,
+//               documentId : status.documentId
+//             }
+//             await prisma.nextStatus.create({
+//               data
+//             })
+//           }
+//         }
+//       }
+// }

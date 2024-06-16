@@ -2,9 +2,6 @@ import { authOptions } from "@/auth-options";
 import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import ChangeStatus from "./change-status";
-import { setNextStatusState } from "@/lib/status-state";
-import { NextStatus } from "@prisma/client";
 
 async function getDocument(id: string) {
   const document = await prisma.document.findFirst({
@@ -40,7 +37,6 @@ async function getDocument(id: string) {
           name: true,
         },
       },
-      nextStatus: true,
     },
   });
   return document;
@@ -57,12 +53,7 @@ export default async function Page({ params }: { params: { id: string } }) {
     if (!document || !document.status || document.status.length == 0) {
       return <div>ไม่พบเอกสาร</div>;
     }
-    let nextStatuses: NextStatus[] = [];
-    for (const n of document.nextStatus) {
-      if (n.userId == session.pea.id || n.role == session.pea.role) {
-        nextStatuses.push(n);
-      }
-    }
+    
     return (
       <div className="max-w-md mx-auto bg-white p-6 rounded-lg shadow-lg">
         <div className="mb-4">
@@ -94,7 +85,6 @@ export default async function Page({ params }: { params: { id: string } }) {
             </div>
           </div>
         </div>
-        <ChangeStatus nextStatuses={nextStatuses} documentId={params.id} />
         {document.status.map((val, i) => {
           return (
             <div key={i} className="flex flex-row gap-3">

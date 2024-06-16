@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client"
-import { Session, User } from "next-auth"
+import { NextAuthOptions, Session, User } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt"
 import { JWT } from "next-auth/jwt";
@@ -7,7 +7,7 @@ import { JWT } from "next-auth/jwt";
 
 const prisma = new PrismaClient()
 
-export const authOptions = {
+export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -56,7 +56,28 @@ export const authOptions = {
       return token
     },
     session: async ({ session, token }:{session: Session,token:JWT}) => {
-      session.pea = token.pea
+      if(!token.pea){
+        return session
+      }
+      const findUser = await prisma.user.findFirst({
+        where: {
+          id: token.pea.id
+        },
+        select : {
+          id: true,
+          user: true,
+          name: true,
+          tel: true,
+          section: true,
+          role: true,
+          suspend: true
+        }
+      })
+      if(!findUser || findUser.suspend){
+        return session
+      }
+      const {id,name,user,tel,role,section} = findUser
+      session.pea = {id,name,user,tel,role,section}
       return session
     }
   },
