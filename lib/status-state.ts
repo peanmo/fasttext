@@ -7,74 +7,57 @@ export type ChangeStatus = {
     specific?: string
 }
 
+export function getNextStatus(current:string):string[]{
+    const next = nextStatusMap.get(current)
+    if(!next){
+        return []
+    }
+    return next
+}
+
 export function getNextStatusArr(current: string){
     let lists = nextStatusMap.get(current)
     if(!lists){
         return []
     }
-    let listObjs : ChangeStatus[] = []
+    let listStr : string[] = []
     for (const o of lists){
-        o&&listObjs.push(o)
+        o&&listStr.push(o)
     }
-    return listObjs
+    return listStr
 }
 
-export const allStatusList : ChangeStatus[] = [
-    {
-        name: "รอเอกสารต้นฉบับ",
-        specific: "รอเอกสารต้นฉบับ"
-    },{
-        name: "รับเอกสารต้นฉบับ",
-        role: "checker",
-    },{
-        name: "กำลังตรวจสอบเอกสาร",
-        specific: "รับเอกสารต้นฉบับ",
-    },{
-        name: "เอกสารตรวจสอบผ่านเรียบร้อย",
-        specific: "รับเอกสารต้นฉบับ",
-    },{
-        name: "เอกสารตรวจไม่ผ่าน",
-        specific: "รับเอกสารต้นฉบับ",
-    },{
-        name: "เอกสารส่งคืน/ตีกลับ",
-        specific: "รับเอกสารต้นฉบับ",
-    },{
-        name: "กำลังดำเนินการเข้าระบบ",
-        role: "checker",
-    },{
-        name: "ดำเนินการประมวลผลในระบบ SAP",
-        specific: "กำลังดำเนินการเข้าระบบ",
-    },{
-        name: "พบปัญหาในระบบ SAP",
-        specific: "กำลังดำเนินการเข้าระบบ",
-    },{
-        name: "ใบสำคัญจ่ายรอเสนอ หผ./ผจก.",
-        specific: "กำลังดำเนินการเข้าระบบ",
-    },{
-        name: "ใบสำคัญจ่ายรอเบิกจ่ายเงินสด/เช็ค",
-        role: "manager",
-    },{
-        name: "เบิกจ่ายเสร็จสิ้น",
-        role: "checker",
-    },{
-        name: "ยกเลิก",
-        role: "admin"
-    },
+export const allStatusList : string[] = [
+    "รอเอกสารต้นฉบับ",
+    "รับเอกสารต้นฉบับ",
+    "กำลังตรวจสอบเอกสาร",
+    "เอกสารตรวจสอบผ่านเรียบร้อย",
+    "เอกสารตรวจไม่ผ่าน",
+    "กำลังดำเนินการเข้าระบบ",
+    "ดำเนินการประมวลผลในระบบ SAP",
+    "พบปัญหาในระบบ SAP",
+    "ใบสำคัญจ่ายรอเสนอ หผ.",
+    "ใบสำคัญจ่ายรอเสนอ ผจก.",
+    "ใบสำคัญจ่ายรอเบิกจ่ายเงินสด/เช็ค",
+    "เบิกจ่ายเสร็จสิ้น",
+    "ยกเลิก",
 ]
 
 export const nextStatusMap = new Map([
-    ["รอเอกสารต้นฉบับ",[allStatusList.find(o => o.name == 'รับเอกสารต้นฉบับ'),allStatusList.find(o => o.name == 'ยกเลิก')]],
-    ["รับเอกสารต้นฉบับ",[allStatusList.find(o => o.name == 'กำลังตรวจสอบเอกสาร'),allStatusList.find(o => o.name == 'ยกเลิก')]],
-    ["กำลังตรวจสอบเอกสาร",[allStatusList.find(o => o.name == 'เอกสารตรวจไม่ผ่าน'),allStatusList.find(o => o.name == 'เอกสารตรวจสอบผ่านเรียบร้อย'),allStatusList.find(o => o.name == 'ยกเลิก')]],
-    ["เอกสารตรวจไม่ผ่าน",[allStatusList.find(o => o.name == 'เอกสารส่งคืน/ตีกลับ'),allStatusList.find(o => o.name == 'ยกเลิก')]],
-    ["เอกสารส่งคืน/ตีกลับ",[allStatusList.find(o => o.name == 'รอเอกสารต้นฉบับ'),allStatusList.find(o => o.name == 'ยกเลิก')]],
-    ["เอกสารตรวจสอบผ่านเรียบร้อย",[allStatusList.find(o => o.name == 'กำลังดำเนินการเข้าระบบ'),allStatusList.find(o => o.name == 'ยกเลิก')]],
-    ["กำลังดำเนินการเข้าระบบ",[allStatusList.find(o => o.name == 'ดำเนินการประมวลผลในระบบ SAP'),allStatusList.find(o => o.name == 'ยกเลิก')]],
-    ["ดำเนินการประมวลผลในระบบ SAP",[allStatusList.find(o => o.name == 'ใบสำคัญจ่ายรอเสนอ หผ./ผจก.'),allStatusList.find(o => o.name == 'พบปัญหาในระบบ SAP'),allStatusList.find(o => o.name == 'ยกเลิก')]],
-    ["พบปัญหาในระบบ SAP",[allStatusList.find(o => o.name == 'ดำเนินการประมวลผลในระบบ SAP'),allStatusList.find(o => o.name == 'ยกเลิก')]],
-    ["ใบสำคัญจ่ายรอเสนอ หผ./ผจก.",[allStatusList.find(o => o.name == 'ใบสำคัญจ่ายรอเบิกจ่ายเงินสด/เช็ค'),allStatusList.find(o => o.name == 'ยกเลิก')]],
-    ["ใบสำคัญจ่ายรอเบิกจ่ายเงินสด/เช็ค",[allStatusList.find(o => o.name == 'เบิกจ่ายเสร็จสิ้น'),allStatusList.find(o => o.name == 'ยกเลิก')]],
-    ["เบิกจ่ายเสร็จสิ้น",[allStatusList.find(o => o.name == 'ยกเลิก')]],
+    ["รอเอกสารต้นฉบับ",['รับเอกสารต้นฉบับ']],
+    ["รับเอกสารต้นฉบับ",['กำลังตรวจสอบเอกสาร']],
+    ["กำลังตรวจสอบเอกสาร",['เอกสารตรวจไม่ผ่าน','เอกสารตรวจสอบผ่านเรียบร้อย']],
+    ["เอกสารตรวจไม่ผ่าน",['เอกสารส่งคืน/ตีกลับ']],
+    ["เอกสารตรวจสอบผ่านเรียบร้อย",['กำลังดำเนินการเข้าระบบ']],
+    ["กำลังดำเนินการเข้าระบบ",['ดำเนินการประมวลผลในระบบ SAP']],
+    ["ดำเนินการประมวลผลในระบบ SAP",['ใบสำคัญจ่ายรอเสนอ หผ./ผจก.','พบปัญหาในระบบ SAP']],
+    ["พบปัญหาในระบบ SAP",["ใบสำคัญจ่ายรอเสนอ หผ."]],
+    ["ใบสำคัญจ่ายรอเสนอ หผ.",['ใบสำคัญจ่ายรอเสนอ ผจก.','หผ. ตรวจสอบไม่ผ่าน']],
+    ["หผ. ตรวจสอบไม่ผ่าน",["ใบสำคัญจ่ายรอเสนอ ผจก."]],
+    ["ใบสำคัญจ่ายรอเสนอ ผจก.",['ใบสำคัญจ่ายรอเบิกจ่ายเงินสด/เช็ค','ผจก. ตรวจสอบไม่ผ่าน']],
+    ["ผจก. ตรวจสอบไม่ผ่าน",["ใบสำคัญจ่ายรอเบิกจ่ายเงินสด/เช็ค"]],
+    ["ใบสำคัญจ่ายรอเบิกจ่ายเงินสด/เช็ค",['เบิกจ่ายเสร็จสิ้น']],
+    ["เบิกจ่ายเสร็จสิ้น",[]],
 ])
 
 // export async function setNextStatusState(document:Partial<Document> & {status: Status[], nextStatus: NextStatus[]},status:Status){

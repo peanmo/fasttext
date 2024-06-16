@@ -15,28 +15,23 @@ function getCurrentThaiYear(): number {
 async function getLastestDocNumber() {
   const currentYear = getCurrentThaiYear();
   const yearSuffix = currentYear.toString();
-
-  // ดึงหมายเลขเอกสารล่าสุดสำหรับปีปัจจุบัน
+  
   const latestDocument = await prisma.document.findFirst({
     where: {
-      docNo: {
-        endsWith: `/${yearSuffix}`,
-      },
+      year:yearSuffix,
     },
     orderBy: {
-      docNo: 'desc',
+      date: 'desc',
     },
   });
 
   let newDocNo = 1;
   if (latestDocument) {
-    const latestDocNo = parseInt(latestDocument.docNo.split('/')[0], 10);
+    const latestDocNo = latestDocument.docNo
     newDocNo = latestDocNo + 1;
   }
 
-  const formattedDocNo = `${newDocNo}/${yearSuffix}`;
-
-  return formattedDocNo
+  return {newDocNo,yearSuffix}
 }
 
 
@@ -85,18 +80,21 @@ export async function addDocument(prevState: {message: string, err: boolean}, fo
     fromSectionId: session.pea.section.id,
   }
 
-  const formattedDocNo = await getLastestDocNumber()
+  const {newDocNo,yearSuffix} = await getLastestDocNumber()
 
   // สร้างเอกสารใหม่
   const newDocument = await prisma.document.create({
     data: {
       ...data,
-      docNo: formattedDocNo,
+      docNo: newDocNo,
+      year: yearSuffix,
+      date: new Date()
     },
     select: {
       status:true,
       id: true,
-      docNo: true
+      docNo: true,
+      year: true
     }
   });
 
@@ -110,7 +108,7 @@ export async function addDocument(prevState: {message: string, err: boolean}, fo
   })
   return {
     err: false,
-    message: "สร้างเอกสารสำเร็จ"
+    message: newDocument.id
   }
 }
 

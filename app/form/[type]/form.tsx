@@ -2,21 +2,16 @@
 
 import { Session } from "next-auth";
 import { useFormState } from "react-dom";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { addDocument } from "./action";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
+import { typeMapping } from "@/lib/doctype-map";
+
 
 const initialState = {
   message: "",
-  err: false,
-};
-
-const typeMapping: { [key: string]: string } = {
-  thousand: "จัดซื้อจัดจ้างเกิน 1 แสน",
-  procurement: "จัดซื้อจัดจ้าง",
-  benefit: "สวัสดิการ",
-  guarantee: "คืนค่าประกัน",
+  err: true,
 };
 
 export default function FormDocument({
@@ -26,6 +21,7 @@ export default function FormDocument({
   session: Session;
   type: string;
 }) {
+  const router = useRouter()
   const [state, formAction] = useFormState(addDocument, initialState);
   const formRef = useRef<HTMLFormElement>(null); // สร้าง ref เพื่อเก็บอ้างอิงฟอร์ม
 
@@ -39,17 +35,22 @@ export default function FormDocument({
     if (formRef.current) {
       formRef.current.reset(); // รีเซ็ตฟอร์มโดยใช้ ref
     }
-
-    Swal.fire({
-      position: "center",
-      icon: "success",
-      title: "บันทึกข้อมูลเรียบร้อย",
-      showConfirmButton: false,
-      timer: 3000,
-    });
   };
 
-  const displayType = typeMapping[type] || type;
+  const displayType = typeMapping.get(type) || type;
+
+  useEffect(()=>{
+    if(!state.err){
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "บันทึกข้อมูลเรียบร้อย",
+        showConfirmButton: false,
+        timer: 1000,
+      });
+      router.push(`/history/${state.message}`)
+    }
+  },[state])
 
   return (
     <div className="max-w-md mx-auto bg-white p-6 rounded-lg shadow-lg">
@@ -64,7 +65,7 @@ export default function FormDocument({
           <input
             name="docNo"
             type="text"
-            value={!state.err ? state.message : ""}
+            value={state.err ? state.message : ""}
             disabled
             required
             className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
