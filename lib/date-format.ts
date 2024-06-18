@@ -8,3 +8,10 @@ export function dateFormat(dateTime:Date){
         hour12: false
       }).replace(',', '')
 }
+
+export function dateInputFormat(date:Date){
+  let month = (date.getMonth() + 1).toString().padStart(2, '0');
+  let day = date.getDate().toString().padStart(2, '0');
+  let year = date.getFullYear();
+  return `${year}-${month}-${day}`;
+}

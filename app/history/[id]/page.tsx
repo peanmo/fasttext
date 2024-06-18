@@ -2,8 +2,13 @@ import { authOptions } from "@/auth-options";
 import { dateFormat } from "@/lib/date-format";
 import { typeMapping } from "@/lib/doctype-map";
 import prisma from "@/lib/prisma";
+import { getNextStatusArr } from "@/lib/status-state";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
+import ChangeStatus from "./change-status";
+import DeleteStatus from "./delete-status";
+
+
 
 async function getDocument(id: string) {
   const document = await prisma.document.findFirst({
@@ -56,6 +61,8 @@ export default async function Page({ params }: { params: { id: string } }) {
     if (!document || !document.status || document.status.length == 0) {
       return <div>ไม่พบเอกสาร</div>;
     }
+
+    const nextStatus = getNextStatusArr(document.status[0].name)
     
     return (
       <div className="max-w-md mx-auto bg-white p-6 rounded-lg shadow-lg">
@@ -88,14 +95,16 @@ export default async function Page({ params }: { params: { id: string } }) {
             </div>
           </div>
         </div>
+        {['admin','checker'].includes(session.pea.role)&&<ChangeStatus documentId={document.id} nextStatus={nextStatus}/>}
         {document.status.map((val, i) => {
           return (
-            <div key={i} className="flex flex-row gap-3">
+            <div key={i} className="flex flex-row flex-wrap gap-1 mt-3">
               <span> ๐ </span>
               <span>{dateFormat(val.date)}</span>
               <span>{val.name}</span>
               <span>{val.note}</span>
               <span>{val.updatedByUser.name}</span>
+              {val.name != "รอเอกสารต้นฉบับ" &&session.pea && ['admin','checker'].includes(session.pea?.role) && <DeleteStatus statusId={val.id}/>}
             </div>
           );
         })}

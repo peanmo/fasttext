@@ -13,6 +13,13 @@ export async function changeStatus(statusName: string, documentId:string) {
         redirect ("/api/auth/signin")
     }
 
+    if(!['admin','checker'].includes(session.pea.role)){
+        return {
+            err: true,
+            message: "คุณไม่มีสิทธิ์ในการเปลี่ยนแปลงสถานะเอกสาร"
+        }
+    }
+
     
 
     try{
@@ -41,6 +48,11 @@ export async function changeStatus(statusName: string, documentId:string) {
                 message: "ไม่พบเอกสารของคุณในฐานข้อมูล"
             }
         }
+
+        return {
+            err: false,
+            message: "เปลี่ยนสถานะสำเร็จ"
+        }
         
     }catch(e){
         return {
@@ -48,4 +60,39 @@ export async function changeStatus(statusName: string, documentId:string) {
             message: "เกิดข้อผิดพลาดจาก server"
         }
     }
+}
+
+export async function deleteStatus(statusId:string) {
+    const session = await getServerSession(authOptions)
+    if(!session || !session.pea){
+        redirect ("/api/auth/signin")
+    }
+
+    if(!['admin','checker'].includes(session.pea.role)){
+        return {
+            err: true,
+            message: "คุณไม่มีสิทธิ์ในการเปลี่ยนแปลงสถานะเอกสาร"
+        }
+    }
+    const findStatus = await prisma.status.findFirst({
+        where: {
+            id: statusId
+        }
+    })
+    if(!findStatus || findStatus.name == "รอเอกสารต้นฉบับ"){
+        return {
+            err: true,
+            message: "ไม่สามารถลบสถานะ 'รอเอกสารต้นฉบับได้' หรือหาสถานะนี้ของเอกสารนี้ไม่เจอ"
+        }
+    }
+    const resultDelete = await prisma.status.delete({
+        where: {
+            id: statusId
+        }
+    })
+    return {
+        err: false,
+        message: "ลบสถานะนี้สำเร็จ"
+    }
+    
 }

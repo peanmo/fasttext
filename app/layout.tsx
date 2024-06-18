@@ -45,6 +45,15 @@ export default async function RootLayout({
                       href="/manage-docs"
                       className=" text-white  hover:bg-white hover:text-black rounded-lg p-2"
                     >
+                      จัดการเอกสารหลายฉบับ
+                    </a>
+                  )}
+                  {session && session.pea && ["admin","checker"].includes(session.pea.role) && 
+                  (
+                    <a
+                      href="/manage-doc"
+                      className=" text-white  hover:bg-white hover:text-black rounded-lg p-2"
+                    >
                       จัดการเอกสาร
                     </a>
                   )}
