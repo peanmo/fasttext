@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/auth-options";
+import Image from "next/image";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,68 +17,73 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await getServerSession(authOptions)
+  const session = await getServerSession(authOptions);
 
   return (
     <html lang="en">
       <body className={inter.className}>
-        <nav className=" bg-black min-w-full">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <nav className="bg-pea min-w-full rounded-b-lg">
+          <div className="mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16">
               <div className="flex items-center">
-                <div className="flex-shink-0">
-                  <a href="/" className=" text-white">
+                <div className="flex-shrink-0">
+                  <Image src="/logo.png" alt="Logo" width={100} height={50} />
+                </div>
+                <div className="flex-shrink-0">
+                  <a href="/" className="text-white">
                     FAST TEXT
                   </a>
                 </div>
               </div>
-              <div className=" hidden md:block">
-                <div className=" ml-4 flex items-start space-x-4">
+              <div className="hidden md:block">
+                <div className="ml-4 flex items-start space-x-4">
                   <a
                     href="/"
-                    className=" text-white  hover:bg-white hover:text-black rounded-lg p-2"
+                    className="text-white hover:bg-white hover:text-black rounded-lg p-2"
                   >
                     HOME
                   </a>
-                  {session && session.pea && ["admin","checker"].includes(session.pea.role) && 
-                  (
-                    <a
-                      href="/manage-docs"
-                      className=" text-white  hover:bg-white hover:text-black rounded-lg p-2"
-                    >
-                      จัดการเอกสารหลายฉบับ
-                    </a>
-                  )}
-                  {session && session.pea && ["admin","checker"].includes(session.pea.role) && 
-                  (
-                    <a
-                      href="/manage-doc"
-                      className=" text-white  hover:bg-white hover:text-black rounded-lg p-2"
-                    >
-                      จัดการเอกสาร
-                    </a>
-                  )}
+                  {session &&
+                    session.pea &&
+                    ["admin", "checker"].includes(session.pea.role) && (
+                      <a
+                        href="/manage-docs"
+                        className="text-white hover:bg-white hover:text-black rounded-lg p-2"
+                      >
+                        จัดการเอกสารหลายฉบับ
+                      </a>
+                    )}
+                  {session &&
+                    session.pea &&
+                    ["admin", "checker"].includes(session.pea.role) && (
+                      <a
+                        href="/manage-doc"
+                        className="text-white hover:bg-white hover:text-black rounded-lg p-2"
+                      >
+                        จัดการเอกสาร
+                      </a>
+                    )}
                   <a
                     href="/form/benefit"
-                    className=" text-white  hover:bg-white hover:text-black rounded-lg p-2"
+                    className="text-white hover:bg-white hover:text-black rounded-lg p-2"
                   >
                     สวัสดิการ
                   </a>
                   <a
                     href="/form/procurement"
-                    className=" text-white  hover:bg-white hover:text-black rounded-lg p-2"
+                    className="text-white hover:bg-white hover:text-black rounded-lg p-2"
                   >
                     จัดซื้อจัดจ้าง
                   </a>
                   <a
                     href="/form/thousand"
-                    className=" text-white  hover:bg-white hover:text-black rounded-lg p-2"
+                    className="text-white hover:bg-white hover:text-black rounded-lg p-2"
                   >
                     จัดซื้อจัดจ้างเกิน 1 แสน
                   </a>
                   <a
                     href="/form/guarantee"
-                    className=" text-white  hover:bg-white hover:text-black rounded-lg p-2"
+                    className="text-white hover:bg-white hover:text-black rounded-lg p-2"
                   >
                     คืนค่าประกัน
                   </a>
@@ -93,11 +99,10 @@ export default async function RootLayout({
                     />
                     <label
                       htmlFor="menu-toggle"
-                      className="inline-flex justify-center w-full rounded-md border shadow-sm px-4 py-2 bg-white text-sm       "
+                      className="inline-flex justify-center w-full rounded-md border shadow-sm px-4 py-2 bg-white text-sm"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                       
                         width="15px"
                         height="15px"
                         viewBox="0 0 50 50"
@@ -105,8 +110,8 @@ export default async function RootLayout({
                         <path d="M 0 9 L 0 11 L 50 11 L 50 9 Z M 0 24 L 0 26 L 50 26 L 50 24 Z M 0 39 L 0 41 L 50 41 L 50 39 Z"></path>
                       </svg>
                     </label>
-                    <div className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden peer-checked:block"> 
-                    {/* peer-checked:block  cssที่ใช้ในการเปิดปิดการแสดงผล */}
+                    <div className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden peer-checked:block">
+                      {/* peer-checked:block  cssที่ใช้ในการเปิดปิดการแสดงผล */}
                       <div
                         className="py-1"
                         role="menu"
@@ -120,6 +125,26 @@ export default async function RootLayout({
                         >
                           HOME
                         </a>
+                        {session &&
+                          session.pea &&
+                          ["admin", "checker"].includes(session.pea.role) && (
+                            <a
+                              href="/manage-docs"
+                              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                            >
+                              จัดการเอกสารหลายฉบับ
+                            </a>
+                          )}
+                        {session &&
+                          session.pea &&
+                          ["admin", "checker"].includes(session.pea.role) && (
+                            <a
+                              href="/manage-doc"
+                              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                            >
+                              จัดการเอกสาร
+                            </a>
+                          )}
                         <a
                           href="/form/benefit"
                           className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"

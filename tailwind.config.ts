@@ -7,7 +7,11 @@ const config: Config = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    extend: { },
+    extend: {
+      colors: {
+        pea: "#7f3f98", // สีดำ
+      },
+    },
   },
 };
 export default config;

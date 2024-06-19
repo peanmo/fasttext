@@ -37,9 +37,9 @@ export default async function Page(){
     })
     return (
         <div className="flex flex-col gap-3 p-3">
-            <p>จัดการเอกสาร</p>
+            {/* <p>จัดการเอกสาร</p>
             <p>ค้นหาเอกสาร</p>
-            <SearchDocs/>
+            <SearchDocs/> */}
             <DocumentTable documentsWithStatus={docs} session={session}/>
         </div>
     )
