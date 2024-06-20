@@ -2,12 +2,14 @@
 import DocumentTable from "@/app/component/docs-table";
 import { dateInputFormat } from "@/lib/date-format";
 import { allTypeDoc, typeMapping } from "@/lib/doctype-map";
-import prisma from "@/lib/prisma";
 import { Session } from "next-auth";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import { DocumentWithStatus } from "@/lib/types"
+import { searchDocs } from "./action";
 
 
-export default async function SearchDocs({ session }: { session: Session }) {
+export default function SearchDocs({ session }: { session: Session }) {
+  const [docs,setDocs] = useState<DocumentWithStatus[]>([])
   const defaultDate = useMemo(() => {
     const end = new Date();
     const start = new Date(end);
@@ -20,35 +22,15 @@ export default async function SearchDocs({ session }: { session: Session }) {
     };
   }, []);
 
-  const docs = await prisma.document.findMany({
-    select: {
-      amount: true,
-      date: true,
-      docNo: true,
-      year: true,
-      id: true,
-      name: true,
-      type: true,
-      status: {
-        select: {
-          name: true,
-        },
-        orderBy: {
-          date: "desc",
-        },
-      },
-      user: {
-        select: {
-          name: true,
-          user: true,
-        },
-      },
-    },
-  });
+  const handleSearch = async (formData:FormData) => {
+    const res = await searchDocs(formData)
+    setDocs(res)
+  }
+
   return (
     <div className="p-3">
       <form
-        action={() => {}}
+        action={(formData) => handleSearch(formData) }
         className="flex flex-col gap-4 p-4 bg-white rounded-lg shadow-md"
       >
         <p className="text-lg font-semibold">วันที่สร้าง</p>
@@ -56,6 +38,7 @@ export default async function SearchDocs({ session }: { session: Session }) {
           เริ่มต้น
         </label>
         <input
+          required
           name="startDate"
           type="date"
           defaultValue={defaultDate.start}
@@ -66,6 +49,7 @@ export default async function SearchDocs({ session }: { session: Session }) {
           สิ้นสุด
         </label>
         <input
+          required
           name="endDate"
           defaultValue={defaultDate.end}
           type="date"
@@ -87,8 +71,9 @@ export default async function SearchDocs({ session }: { session: Session }) {
             </option>
           ))}
         </select>
+        <button type='submit'>ค้นหา</button>
       </form>
-      {/* <DocumentTable session={session} documentsWithStatus={docs} /> */}
+      <DocumentTable session={session} documentsWithStatus={docs} />
     </div>
   );
 }

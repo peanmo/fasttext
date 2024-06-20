@@ -1,5 +1,6 @@
 import DocumentTable from "@/app/component/docs-table";
 import { authOptions } from "@/auth-options";
+import { getDocsWithLatestStatusAndUserId } from "@/lib/mongo-get-docs";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
@@ -8,11 +9,13 @@ export default async function Page() {
     if(!session || !session.pea){
         redirect("/api/auth/signin")
     }
+    const documentsWithStatus = await getDocsWithLatestStatusAndUserId("ยกเลิก",session.pea.id)
     return(
         <div className="flex flex-col gap-3">
             <h1>เอกสารถูกยกเลิก</h1>
-            <h4>จำนวน 4 ฉบับ</h4>
-            <DocumentTable session={session} documentsWithStatus={[]}/>
+            <h4>จำนวน {documentsWithStatus.length} ฉบับ</h4>
+            <DocumentTable session={session} documentsWithStatus={documentsWithStatus}/>
         </div>
     )    
 }
+

@@ -41,6 +41,7 @@ export const allStatusList : string[] = [
     "ใบสำคัญจ่ายรอเบิกจ่ายเงินสด/เช็ค",
     "เบิกจ่ายเสร็จสิ้น",
     "ยกเลิก",
+    "เอกสารส่งคืน/ตีกลับ"
 ]
 
 export const nextStatusMap = new Map([
