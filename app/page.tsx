@@ -1,47 +1,22 @@
-import prisma from "@/lib/prisma"
+import { authOptions } from "@/auth-options";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
 import Link from "next/link";
 
 
 export default async function Home(){
-    const documents = await prisma.document.findMany({
-        select: {
-            id: true,
-            user: true,
-            name: true,
-            amount: true,
-            status: {
-                orderBy: {
-                    date: "desc"
-                }
-            }
-        }
-    })
-    const documentsWithLatestStatus = documents.map(doc => {
-        const latestStatus = doc.status.reduce((latest, current) => {
-          return new Date(current.date) > new Date(latest.date) ? current : latest;
-        }, doc.status[0]);
-        
-        return {
-          ...doc,
-          status: latestStatus,
-        };
-    });
+    const session = await getServerSession(authOptions)
+    if(!session || !session.pea)
+    {
+        redirect("/api/auth/signin")
+    }
     return (
-        <div>
-            หน้าแรก
-            {documentsWithLatestStatus.map((val)=>{
-                return (
-                    <div key={val.id} className="flex flex-row justify-between">
-                        <Link  href={`/history/${val.id}`} className="flex flex-row justify-between">
-                            <span>{val.user.name}</span>
-                            <span>{val.name}</span>
-                            <span>{val.amount}</span>
-                            <span>{val.status.name}</span> 
-                        </Link>
-                    </div>
-                )
-            })}
-            
+        <div className="flex flex-col gap-3">
+            <h1>ยินดีต้อนรับ {session.pea.name}</h1>
+            <Link href={"/user/waiting-docs"}>รอเอกสารต้นฉบับ จำนวน 4 ฉบับ</Link>
+            <Link href={"/user/returned-docs"}>เอกสารส่งคืน/ตีกลับ จำนวน 4 ฉบับ</Link>
+            <Link href={"/user/cancel-docs"}>เอกสารถูกยกยเลิก จำนวน 4 ฉบับ</Link>
+            <Link href={"/user/all-docs"}>เอกสารของคุณทั้งหมด</Link>  
         </div>
     )
 }
