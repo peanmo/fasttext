@@ -28,11 +28,11 @@ export default async function RootLayout({
               <div className="flex items-center">
                 <div className="flex-shrink-0">
                   <Image src="/logo.png" alt="Logo" width={100} height={50} />
-                </div>
-                <div className="flex-shrink-0">
-                  <a href="/" className="text-white">
-                    FAST TEXT
-                  </a>
+                  <div className="flex-shrink-0">
+                    <a href="/" className="text-white">
+                      FAST TEXT
+                    </a>
+                  </div>
                 </div>
               </div>
               <div className="hidden md:block">

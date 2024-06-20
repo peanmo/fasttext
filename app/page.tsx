@@ -29,7 +29,8 @@ export default async function Home(){
     return (
         <div>
             หน้าแรก
-            {documentsWithLatestStatus.map((val)=>{
+            ***รอทำข้อมูล 3 รายการเป็ฯ card 1.รอเอกสารต้นฉบับ 2.เอกสารส่งคืน 3.เสร็จสิ้นกระบวนการ มีการแจ้งเตือนที่ไอคอนด้วยว่ามีกี่รายการให้มีการนับได้ตาม User
+            {/* {documentsWithLatestStatus.map((val)=>{
                 return (
                     <div key={val.id} className="flex flex-row justify-between">
                         <Link  href={`/history/${val.id}`} className="flex flex-row justify-between">
@@ -40,7 +41,7 @@ export default async function Home(){
                         </Link>
                     </div>
                 )
-            })}
+            })} */}
             
         </div>
     )
