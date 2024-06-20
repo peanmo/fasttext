@@ -1,21 +1,11 @@
 "use client";
-
 import DocumentTable from "@/app/component/docs-table";
 import { dateInputFormat } from "@/lib/date-format";
 import { allTypeDoc, typeMapping } from "@/lib/doctype-map";
 import prisma from "@/lib/prisma";
-import { Status, User, Document } from "@prisma/client";
 import { Session } from "next-auth";
 import { useMemo } from "react";
 
-import { useFormState } from "react-dom";
-
-type DocumentWithStatus = Pick<
-  Document,
-  "amount" | "date" | "docNo" | "year" | "id" | "name" | "type"
-> & { status: Pick<Status, "name">[] } & { user: Pick<User, "name" | "user"> };
-
-const initailDocs: DocumentWithStatus[] = [];
 
 export default async function SearchDocs({ session }: { session: Session }) {
   const defaultDate = useMemo(() => {
@@ -57,25 +47,48 @@ export default async function SearchDocs({ session }: { session: Session }) {
   });
   return (
     <div className="p-3">
-      <form action={(e) => {}} className="flex flex-col gap-1">
-        <p>วันที่สร้าง</p>
-        <label htmlFor="startDate">เริ่มต้น</label>
-        <input name="startDate" type="date" defaultValue={defaultDate.start} />
-        <label htmlFor="endDate">สิ้นสุด</label>
-        <input name="endDate" defaultValue={defaultDate.end} type="date" />
-        <label htmlFor="type">ประเภทเอกสาร</label>
-        <select name="type" defaultValue="all">
+      <form
+        action={() => {}}
+        className="flex flex-col gap-4 p-4 bg-white rounded-lg shadow-md"
+      >
+        <p className="text-lg font-semibold">วันที่สร้าง</p>
+        <label htmlFor="startDate" className="text-gray-700">
+          เริ่มต้น
+        </label>
+        <input
+          name="startDate"
+          type="date"
+          defaultValue={defaultDate.start}
+          className="border rounded-md p-2"
+        />
+
+        <label htmlFor="endDate" className="text-gray-700">
+          สิ้นสุด
+        </label>
+        <input
+          name="endDate"
+          defaultValue={defaultDate.end}
+          type="date"
+          className="border rounded-md p-2"
+        />
+
+        <label htmlFor="type" className="text-gray-700">
+          ประเภทเอกสาร
+        </label>
+        <select
+          name="type"
+          defaultValue="all"
+          className="border rounded-md p-2"
+        >
           <option value="all">ทั้งหมด</option>
-          {allTypeDoc.map((val, i) => {
-            return (
-              <option key={i} value={val}>
-                {typeMapping.get(val) || val}
-              </option>
-            );
-          })}
+          {allTypeDoc.map((val, i) => (
+            <option key={i} value={val}>
+              {typeMapping.get(val) || val}
+            </option>
+          ))}
         </select>
       </form>
-      <DocumentTable session={session} documentsWithStatus={docs} />
+      {/* <DocumentTable session={session} documentsWithStatus={docs} /> */}
     </div>
   );
 }
