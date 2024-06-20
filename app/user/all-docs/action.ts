@@ -23,7 +23,6 @@ export async function searchDocs(formData:FormData) {
     if(!type){
         return []
     }
-    console.log(new Date(startDate))
     try{
         const docs:DocumentWithStatus[] = await prisma.document.findMany({
             where: {
