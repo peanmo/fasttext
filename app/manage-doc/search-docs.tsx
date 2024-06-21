@@ -3,16 +3,16 @@
 import { dateInputFormat } from "@/lib/date-format"
 import { allTypeDoc, typeMapping } from "@/lib/doctype-map"
 import { Status, User, Document } from "@prisma/client"
-import { useMemo } from "react"
+import { useMemo, useState } from "react"
 import { useFormState } from "react-dom"
-import { searchDocumentsWithStatus } from "./action"
+import { searchDocs } from "./action"
+import DocumentTable from "../component/docs-table"
+import { Session } from "next-auth"
+import { DocumentWithStatus } from "@/lib/types"
 
-type DocumentWithStatus = Pick<Document,"amount"|"date"|"docNo"|"year"|"id"|"name"|"type"> & {status : (Pick<Status,"name">)[]} & {user: Pick<User,"name"|"user">}
 
-const initailDocs:DocumentWithStatus[] = [] 
-
-export default function SearchDocs(){
-    const [docs,searchDocs] = useFormState(searchDocumentsWithStatus ,initailDocs)
+export default function SearchDocs({session}:{session:Session}){
+    const [docs,setDocs] = useState<DocumentWithStatus[]>([])
     const defaultDate = useMemo(()=>{
         const end = new Date()
         const start = new Date(end)
@@ -20,14 +20,19 @@ export default function SearchDocs(){
         const year = end.getFullYear()+543
         return {end: dateInputFormat(end), start: dateInputFormat(start), year: year.toString()}
     },[])
+
+    const handleSearch =async (formData:FormData) => {
+        const res = await searchDocs(formData)
+        setDocs(res)
+    }
     return (
         <div className="p-3">
-            <form action={searchDocs} className="flex flex-col gap-1">
+            <form action={handleSearch} className="flex flex-col gap-1">
                 <p>วันที่สร้าง</p>
                 <label htmlFor="startDate">เริ่มต้น</label>
-                <input name="startDate" type="date" defaultValue={defaultDate.start}/>
+                <input name="startDate" type="date" defaultValue={defaultDate.start} required/>
                 <label htmlFor="endDate">สิ้นสุด</label>
-                <input name="endDate" type="date" defaultValue={defaultDate.end}/>
+                <input name="endDate" type="date" defaultValue={defaultDate.end} required/>
                 <label htmlFor="name">ชื่อพนักงาน</label>
                 <input name="name" type="text"/>
                 <label htmlFor="type">ประเภทเอกสาร</label>
@@ -45,9 +50,10 @@ export default function SearchDocs(){
                 <label htmlFor="endDocNo">สิ้นสุด</label>
                 <input name="endDocNo" type="number"/>
                 <label htmlFor="year">ปี</label>
-                <input name="year" type="number" defaultValue={defaultDate.year}/>
+                <input name="year" type="number" defaultValue={defaultDate.year} required/>
                 <button type="submit">ค้นหา้</button>
             </form>
+            <DocumentTable documentsWithStatus={docs} session={session}/>
         </div>
     )
 }

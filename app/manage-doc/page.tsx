@@ -10,37 +10,12 @@ export default async function Page(){
     if(!session || !session.pea){
         redirect("/api/auth/signin")
     }
-    const docs = await prisma.document.findMany({
-        select: {
-            amount: true,
-            date: true,
-            docNo: true,
-            year: true,
-            id: true,
-            name: true,
-            type: true,
-            status: {
-                select: {
-                    name: true
-                },
-                orderBy: {
-                    date: "desc"
-                }
-            },
-            user: {
-                select: {
-                    name: true,
-                    user: true
-                }
-            }
-        }
-    })
     return (
         <div className="flex flex-col gap-3 p-3">
-            {/* <p>จัดการเอกสาร</p>
+            <p>จัดการเอกสาร</p>
             <p>ค้นหาเอกสาร</p>
-            <SearchDocs/> */}
-            <DocumentTable documentsWithStatus={docs} session={session}/>
+            <SearchDocs session={session}/>
+            
         </div>
     )
 } 
