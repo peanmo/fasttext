@@ -14,6 +14,7 @@ export default function SearchDocs({ session }: { session: Session }) {
     const end = new Date();
     const start = new Date(end);
     start.setDate(end.getDate() - 30);
+    end.setDate(end.getDate()+1)
     const year = end.getFullYear() + 543;
     return {
       end: dateInputFormat(end),
