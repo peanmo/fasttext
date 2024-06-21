@@ -54,7 +54,7 @@ export const getColumns = (session: Session) => [
         {row.status.length !== 0 &&
           row.status[0].name === "เอกสารส่งคืน/ตีกลับ" &&
           session.pea?.user === row.user.user && (
-            <Link href="#">แก้ไขเอกสาร</Link>
+            <Link href={`/form/edit/${row.id}`}>แก้ไขเอกสาร</Link>
           )}
       </>
     ),

@@ -1,38 +1,17 @@
 "use server"
 
 import { authOptions } from '@/auth-options';
+import { getLastestDocNumber } from '@/lib/get-latest-docNo';
 import { PrismaClient } from '@prisma/client';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 
+
 const prisma = new PrismaClient();
 
-function getCurrentThaiYear(): number {
-    const currentYear = new Date().getFullYear();
-    return currentYear + 543; // เปลี่ยนปีคริสต์ศักราชเป็นปีพุทธศักราช
-  }
 
-async function getLastestDocNumber() {
-  const currentYear = getCurrentThaiYear();
-  const yearSuffix = currentYear.toString();
-  
-  const latestDocument = await prisma.document.findFirst({
-    where: {
-      year:yearSuffix,
-    },
-    orderBy: {
-      date: 'desc',
-    },
-  });
 
-  let newDocNo = 1;
-  if (latestDocument) {
-    const latestDocNo = latestDocument.docNo
-    newDocNo = latestDocNo + 1;
-  }
 
-  return {newDocNo,yearSuffix}
-}
 
 
 export async function addDocument(prevState: {message: string, err: boolean}, formData: FormData) {

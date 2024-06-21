@@ -48,7 +48,7 @@ const DocumentCard = ({ document, session }: { document: DocumentWithStatus, ses
         {document.status.length !== 0 &&
           document.status[0].name === "เอกสารส่งคืน/ตีกลับ" &&
           session.pea?.user === document.user.user && (
-            <Link href="#">
+            <Link href={`/form/edit/${document.id}`}>
               <p className="text-blue-500 underline">แก้ไขเอกสาร</p>
             </Link>
           )}

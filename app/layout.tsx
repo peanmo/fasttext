@@ -64,25 +64,25 @@ export default async function RootLayout({
                       </a>
                     )}
                   <a
-                    href="/form/benefit"
+                    href="/form/create/benefit"
                     className="text-white hover:bg-white hover:text-black rounded-lg p-2"
                   >
                     สวัสดิการ
                   </a>
                   <a
-                    href="/form/procurement"
+                    href="/form/create/procurement"
                     className="text-white hover:bg-white hover:text-black rounded-lg p-2"
                   >
                     จัดซื้อจัดจ้าง
                   </a>
                   <a
-                    href="/form/thousand"
+                    href="/form/create/thousand"
                     className="text-white hover:bg-white hover:text-black rounded-lg p-2"
                   >
                     จัดซื้อจัดจ้างเกิน 1 แสน
                   </a>
                   <a
-                    href="/form/guarantee"
+                    href="/form/create/guarantee"
                     className="text-white hover:bg-white hover:text-black rounded-lg p-2"
                   >
                     คืนค่าประกัน
