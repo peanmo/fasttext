@@ -28,7 +28,7 @@ export async function createUser(prevState: any, formData: FormData) {
       user
     }
   })
-  if(user){
+  if(findUser){
     return {
       message: "มีรหัสพนักงานนี้อยู่แล้ว"
     }
