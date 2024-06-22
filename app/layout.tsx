@@ -31,13 +31,8 @@ export default async function RootLayout({
                 </div>
               </div>
               <div className="hidden md:block">
-                <div className="ml-4 flex items-start space-x-4">
-                  <a
-                    href="/"
-                    className="text-white hover:bg-white hover:text-black rounded-lg p-2"
-                  >
-                    HOME
-                  </a>
+                <div className="ml-4 flex items-center space-x-4">
+                  
                   {session &&
                     session.pea &&
                     ["admin", "checker"].includes(session.pea.role) && (
@@ -56,11 +51,19 @@ export default async function RootLayout({
                         </a>
                       </>
                     )}
-                  <div className="relative inline-block text-left group">
-                    <button className="text-white hover:bg-white hover:text-black rounded-lg p-2">
+                  <div className="relative inline-block text-left">
+                    <input
+                      type="checkbox"
+                      id="menumain-toggle"
+                      className="hidden peer"
+                    />
+                    <label
+                      htmlFor="menumain-toggle"
+                      className="text-white hover:bg-white hover:text-black rounded-lg p-2 cursor-pointer"
+                    >
                       เพิ่มเอกสาร
-                    </button>
-                    <div className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden group-hover:block">
+                    </label>
+                    <div className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden peer-checked:block">
                       <div
                         className="py-1"
                         role="menu"
@@ -98,6 +101,12 @@ export default async function RootLayout({
                       </div>
                     </div>
                   </div>
+                  <a
+                    href="/api/auth/signout"
+                    className="text-white hover:bg-white hover:text-black rounded-lg p-2"
+                  >
+                    logout
+                  </a>
                 </div>
               </div>
               <div className="md:hidden">
@@ -128,13 +137,7 @@ export default async function RootLayout({
                         aria-orientation="vertical"
                         aria-labelledby="options-menu"
                       >
-                        <a
-                          href="/"
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                          role="menuitem"
-                        >
-                          HOME
-                        </a>
+                        
                         {session &&
                           session.pea &&
                           ["admin", "checker"].includes(session.pea.role) && (
@@ -197,6 +200,13 @@ export default async function RootLayout({
                             </a>
                           </div>
                         </div>
+                        <a
+                          href="/api/auth/signout"
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                          role="menuitem"
+                        >
+                          logout
+                        </a>
                       </div>
                     </div>
                   </div>
