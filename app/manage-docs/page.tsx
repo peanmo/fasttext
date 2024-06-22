@@ -12,7 +12,7 @@ export default async function Page() {
         redirect("/")
     }
     return(
-        <div className="p-3 flex flex-col gap-3">
+        <div className="flex flex-col gap-3  mx-auto p-6 bg-white rounded-lg shadow-lg">
             <p>จัดการเอกสาร</p>
             <ManageDocs/>
         </div>
