@@ -22,17 +22,12 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <nav className="bg-pea min-w-full rounded-b-lg">
+        <nav className="bg-gradient-to-r from-pea to-purple-500 min-w-full rounded-b-lg">
           <div className="mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16">
               <div className="flex items-center">
                 <div className="flex-shrink-0">
                   <Image src="/logo.png" alt="Logo" width={100} height={50} />
-                  <div className="flex-shrink-0">
-                    <a href="/" className="text-white">
-                      FAST TEXT
-                    </a>
-                  </div>
                 </div>
               </div>
               <div className="hidden md:block">
@@ -46,47 +41,63 @@ export default async function RootLayout({
                   {session &&
                     session.pea &&
                     ["admin", "checker"].includes(session.pea.role) && (
-                      <a
-                        href="/manage-docs"
-                        className="text-white hover:bg-white hover:text-black rounded-lg p-2"
-                      >
-                        จัดการเอกสารหลายฉบับ
-                      </a>
+                      <>
+                        <a
+                          href="/manage-docs"
+                          className="text-white hover:bg-white hover:text-black rounded-lg p-2"
+                        >
+                          จัดการเอกสารหลายฉบับ
+                        </a>
+                        <a
+                          href="/manage-doc"
+                          className="text-white hover:bg-white hover:text-black rounded-lg p-2"
+                        >
+                          จัดการเอกสาร
+                        </a>
+                      </>
                     )}
-                  {session &&
-                    session.pea &&
-                    ["admin", "checker"].includes(session.pea.role) && (
-                      <a
-                        href="/manage-doc"
-                        className="text-white hover:bg-white hover:text-black rounded-lg p-2"
+                  <div className="relative inline-block text-left group">
+                    <button className="text-white hover:bg-white hover:text-black rounded-lg p-2">
+                      เพิ่มเอกสาร
+                    </button>
+                    <div className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden group-hover:block">
+                      <div
+                        className="py-1"
+                        role="menu"
+                        aria-orientation="vertical"
+                        aria-labelledby="options-menu"
                       >
-                        จัดการเอกสาร
-                      </a>
-                    )}
-                  <a
-                    href="/form/create/benefit"
-                    className="text-white hover:bg-white hover:text-black rounded-lg p-2"
-                  >
-                    สวัสดิการ
-                  </a>
-                  <a
-                    href="/form/create/procurement"
-                    className="text-white hover:bg-white hover:text-black rounded-lg p-2"
-                  >
-                    จัดซื้อจัดจ้าง
-                  </a>
-                  <a
-                    href="/form/create/thousand"
-                    className="text-white hover:bg-white hover:text-black rounded-lg p-2"
-                  >
-                    จัดซื้อจัดจ้างเกิน 1 แสน
-                  </a>
-                  <a
-                    href="/form/create/guarantee"
-                    className="text-white hover:bg-white hover:text-black rounded-lg p-2"
-                  >
-                    คืนค่าประกัน
-                  </a>
+                        <a
+                          href="/form/create/benefit"
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                          role="menuitem"
+                        >
+                          สวัสดิการ
+                        </a>
+                        <a
+                          href="/form/create/procurement"
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                          role="menuitem"
+                        >
+                          จัดซื้อจัดจ้าง
+                        </a>
+                        <a
+                          href="/form/create/thousand"
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                          role="menuitem"
+                        >
+                          จัดซื้อจัดจ้างเกิน 1 แสน
+                        </a>
+                        <a
+                          href="/form/create/guarantee"
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                          role="menuitem"
+                        >
+                          คืนค่าประกัน
+                        </a>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div className="md:hidden">
@@ -111,7 +122,6 @@ export default async function RootLayout({
                       </svg>
                     </label>
                     <div className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden peer-checked:block">
-                      {/* peer-checked:block  cssที่ใช้ในการเปิดปิดการแสดงผล */}
                       <div
                         className="py-1"
                         role="menu"
@@ -128,51 +138,65 @@ export default async function RootLayout({
                         {session &&
                           session.pea &&
                           ["admin", "checker"].includes(session.pea.role) && (
-                            <a
-                              href="/manage-docs"
-                              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                            >
-                              จัดการเอกสารหลายฉบับ
-                            </a>
+                            <>
+                              <a
+                                href="/manage-docs"
+                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                              >
+                                จัดการเอกสารหลายฉบับ
+                              </a>
+                              <a
+                                href="/manage-doc"
+                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                              >
+                                จัดการเอกสาร
+                              </a>
+                            </>
                           )}
-                        {session &&
-                          session.pea &&
-                          ["admin", "checker"].includes(session.pea.role) && (
+                        <div className="relative">
+                          <input
+                            type="checkbox"
+                            id="submenu-toggle"
+                            className="hidden peer"
+                          />
+                          <label
+                            htmlFor="submenu-toggle"
+                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                            role="menuitem"
+                          >
+                            เพิ่มเอกสาร
+                          </label>
+                          <div className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden peer-checked:block">
                             <a
-                              href="/manage-doc"
+                              href="/form/create/benefit"
                               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                              role="menuitem"
                             >
-                              จัดการเอกสาร
+                              สวัสดิการ
                             </a>
-                          )}
-                        <a
-                          href="/form/benefit"
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                          role="menuitem"
-                        >
-                          สวัสดิการ
-                        </a>
-                        <a
-                          href="/form/procurement"
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                          role="menuitem"
-                        >
-                          จัดซื้อจัดจ้าง
-                        </a>
-                        <a
-                          href="/form/thousand"
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                          role="menuitem"
-                        >
-                          จัดซื้อจัดจ้างเกิน 1 แสน
-                        </a>
-                        <a
-                          href="/form/guarantee"
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                          role="menuitem"
-                        >
-                          คืนค่าประกัน
-                        </a>
+                            <a
+                              href="/form/create/procurement"
+                              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                              role="menuitem"
+                            >
+                              จัดซื้อจัดจ้าง
+                            </a>
+                            <a
+                              href="/form/create/thousand"
+                              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                              role="menuitem"
+                            >
+                              จัดซื้อจัดจ้างเกิน 1 แสน
+                            </a>
+                            <a
+                              href="/form/create/guarantee"
+                              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                              role="menuitem"
+                            >
+                              คืนค่าประกัน
+                            </a>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
