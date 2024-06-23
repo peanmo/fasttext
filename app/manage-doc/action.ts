@@ -61,6 +61,9 @@ export async function searchDocs(formData:FormData) {
                 status: {
                     select :{
                         name :true
+                    },
+                    orderBy : {
+                        date : "desc"
                     }
                 },
                 user : {
