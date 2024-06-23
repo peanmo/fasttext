@@ -31,7 +31,7 @@ export const Navbar = ({ session }: NavbarProps) => {
 
 const DesktopNavbar = ({ session }: NavbarProps) => {
   return (
-    <nav className="bg-gradient-to-r from-pea to-purple-500 shadow-lg">
+    <nav className="bg-gradient-to-r from-pea to-purple-500  w-full fixed shadow-lg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
@@ -66,9 +66,9 @@ const MobileNavbar = ({ session }: NavbarProps) => {
         <div className="flex justify-between">
           {isAdmin ? (
             <>
-              <NavItem href="/" icon={<HomeIcon className="w-6 h-6" />} label="หน้าแรก" />
               <NavItem href="/manage-docs" icon={<DocumentDuplicateIcon className="w-6 h-6" />} label="จัดการเอกสารหลายฉบับ" />
               <NavItem href="/manage-doc" icon={<DocumentIcon className="w-6 h-6" />} label="จัดการเอกสาร" />
+              <NavItem href="/" icon={<HomeIcon className="w-6 h-6" />} label="หน้าแรก" />
               <NavItem href="/document" icon={<PlusIcon className="w-6 h-6" />} label="สถานะเอกสาร" />
               <NavItem href="/user/profile" icon={<UserIcon className="w-6 h-6" />} label="โปรไฟล์" />
             </>
