@@ -1,9 +1,10 @@
+// app/layout.tsx
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/auth-options";
-import Image from "next/image";
+import { Navbar } from "./component/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,200 +23,14 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <nav className="bg-gradient-to-r from-pea to-purple-500 min-w-full rounded-b-lg">
-          <div className="mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-16">
-              <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <Image src="/logo.png" alt="Logo" width={100} height={50} />
-                </div>
-              </div>
-              <div className="hidden md:block">
-                <div className="ml-4 flex items-center space-x-4">
-                  
-                  {session &&
-                    session.pea &&
-                    ["admin", "checker"].includes(session.pea.role) && (
-                      <>
-                        <a
-                          href="/manage-docs"
-                          className="text-white hover:bg-white hover:text-black rounded-lg p-2"
-                        >
-                          จัดการเอกสารหลายฉบับ
-                        </a>
-                        <a
-                          href="/manage-doc"
-                          className="text-white hover:bg-white hover:text-black rounded-lg p-2"
-                        >
-                          จัดการเอกสาร
-                        </a>
-                      </>
-                    )}
-                  <div className="relative inline-block text-left">
-                    <input
-                      type="checkbox"
-                      id="menumain-toggle"
-                      className="hidden peer"
-                    />
-                    <label
-                      htmlFor="menumain-toggle"
-                      className="text-white hover:bg-white hover:text-black rounded-lg p-2 cursor-pointer"
-                    >
-                      เพิ่มเอกสาร
-                    </label>
-                    <div className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden peer-checked:block">
-                      <div
-                        className="py-1"
-                        role="menu"
-                        aria-orientation="vertical"
-                        aria-labelledby="options-menu"
-                      >
-                        <a
-                          href="/form/create/benefit"
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                          role="menuitem"
-                        >
-                          สวัสดิการ
-                        </a>
-                        <a
-                          href="/form/create/procurement"
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                          role="menuitem"
-                        >
-                          จัดซื้อจัดจ้าง
-                        </a>
-                        <a
-                          href="/form/create/thousand"
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                          role="menuitem"
-                        >
-                          จัดซื้อจัดจ้างเกิน 1 แสน
-                        </a>
-                        <a
-                          href="/form/create/guarantee"
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                          role="menuitem"
-                        >
-                          คืนค่าประกัน
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                  <a
-                    href="/api/auth/signout"
-                    className="text-white hover:bg-white hover:text-black rounded-lg p-2"
-                  >
-                    logout
-                  </a>
-                </div>
-              </div>
-              <div className="md:hidden">
-                <div className="ml-4 relative inline-block text-left">
-                  <div>
-                    <input
-                      type="checkbox"
-                      id="menu-toggle"
-                      className="hidden peer"
-                    />
-                    <label
-                      htmlFor="menu-toggle"
-                      className="inline-flex justify-center w-full rounded-md border shadow-sm px-4 py-2 bg-white text-sm"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="15px"
-                        height="15px"
-                        viewBox="0 0 50 50"
-                      >
-                        <path d="M 0 9 L 0 11 L 50 11 L 50 9 Z M 0 24 L 0 26 L 50 26 L 50 24 Z M 0 39 L 0 41 L 50 41 L 50 39 Z"></path>
-                      </svg>
-                    </label>
-                    <div className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden peer-checked:block">
-                      <div
-                        className="py-1"
-                        role="menu"
-                        aria-orientation="vertical"
-                        aria-labelledby="options-menu"
-                      >
-                        
-                        {session &&
-                          session.pea &&
-                          ["admin", "checker"].includes(session.pea.role) && (
-                            <>
-                              <a
-                                href="/manage-docs"
-                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                              >
-                                จัดการเอกสารหลายฉบับ
-                              </a>
-                              <a
-                                href="/manage-doc"
-                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                              >
-                                จัดการเอกสาร
-                              </a>
-                            </>
-                          )}
-                        <div className="relative">
-                          <input
-                            type="checkbox"
-                            id="submenu-toggle"
-                            className="hidden peer"
-                          />
-                          <label
-                            htmlFor="submenu-toggle"
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                            role="menuitem"
-                          >
-                            เพิ่มเอกสาร
-                          </label>
-                          <div className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden peer-checked:block">
-                            <a
-                              href="/form/create/benefit"
-                              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                              role="menuitem"
-                            >
-                              สวัสดิการ
-                            </a>
-                            <a
-                              href="/form/create/procurement"
-                              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                              role="menuitem"
-                            >
-                              จัดซื้อจัดจ้าง
-                            </a>
-                            <a
-                              href="/form/create/thousand"
-                              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                              role="menuitem"
-                            >
-                              จัดซื้อจัดจ้างเกิน 1 แสน
-                            </a>
-                            <a
-                              href="/form/create/guarantee"
-                              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                              role="menuitem"
-                            >
-                              คืนค่าประกัน
-                            </a>
-                          </div>
-                        </div>
-                        <a
-                          href="/api/auth/signout"
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                          role="menuitem"
-                        >
-                          logout
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+        <Navbar session={session} />
+        <main className="mx-auto">
+          <div className="min-h-screen bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 py-12">
+            {/* <div className="max-w-7xl mx-auto p-8 bg-white rounded-xl shadow-2xl"> */}
+              {children}
+            {/* </div> */}
           </div>
-        </nav>
-        {children}
+        </main>
       </body>
     </html>
   );

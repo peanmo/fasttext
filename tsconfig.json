@@ -13,6 +13,7 @@
     "jsx": "preserve",
     "incremental": true,
     "target": "es2015",
+    "typeRoots": ["./node_modules/@types", "./src"],
     "downlevelIteration": true,
     "plugins": [
       {

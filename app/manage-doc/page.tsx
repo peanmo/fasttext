@@ -11,7 +11,7 @@ export default async function Page(){
         redirect("/api/auth/signin")
     }
     return (
-        <div className="flex flex-col gap-3 p-3">
+        <div className="flex flex-col gap-3 max-w-7xl mx-auto p-6 ">
             <p>จัดการเอกสาร</p>
             <p>ค้นหาเอกสาร</p>
             <SearchDocs session={session}/>

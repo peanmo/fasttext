@@ -31,6 +31,7 @@ export default function DocumentTable({
          fixedHeader
           columns={columns}
           data={documentsWithStatus}
+          selectableRows
           pagination
           paginationComponentOptions={paginationComponentOptions}
           responsive
