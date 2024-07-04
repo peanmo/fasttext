@@ -72,7 +72,7 @@ const MobileNavbar = ({ session }: NavbarProps) => {
           <h1 className="text-white text-lg font-bold">Fast Text</h1>
         </div>
       </header>
-      <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200">
+      <nav className="fixed z-50 bottom-0 left-0 right-0 bg-white border-t border-gray-200">
         <div className="max-w-screen-xl mx-auto px-4">
           <div className="flex justify-between">
             {isAdmin ? (

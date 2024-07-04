@@ -43,7 +43,7 @@ export default async function Home() {
   ];
 
   return (
-    <div className="flex flex-col mt-11 gap-3 max-w-7xl mx-auto p-6 bg-gradient-to-br from-pink-400 via-purple-400 via-blue-300 to-green-300 rounded-3xl shadow-xl">
+    <div className="flex flex-col mt-11 gap-3 max-w-7xl mx-auto p-6 bg-gradient-to-br from-pink-200 to-green-100 rounded-3xl shadow-xl">
       <h1 className="text-3xl font-bold text-center mb-8 text-gray-800">
         ยินดีต้อนรับ {session.pea.name}
       </h1>
