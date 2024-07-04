@@ -1,5 +1,3 @@
-import { time } from "console";
-import exp from "constants";
 import { MongoClient } from "mongodb";
 
 if (!process.env.NEXT_PUBLIC_MONGODB_URI) {

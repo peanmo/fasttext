@@ -23,14 +23,22 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Navbar session={session} />
-        <main className="mx-auto">
-          <div className="min-h-screen bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 py-12">
-            {/* <div className="max-w-7xl mx-auto p-8 bg-white rounded-xl shadow-2xl"> */}
-              {children}
-            {/* </div> */}
+        <div
+          className="relative min-h-screen bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `url('/back.jpg')`,
+          }}
+        >
+          <div className="absolute inset-0 bg-black opacity-30 backdrop-filter backdrop-blur-sm"></div>
+          <div className="relative z-10">
+            <Navbar session={session} />
+            <main className="mx-auto max-w-full px-4 sm:px-6 lg:px-8 pt-24">
+              <div className="bg-white bg-opacity-90 rounded-xl shadow-xl p-8 mt-8">
+                {children}
+              </div>
+            </main>
           </div>
-        </main>
+        </div>
       </body>
     </html>
   );

@@ -1,3 +1,4 @@
+// app/page.tsx
 import { authOptions } from "@/auth-options";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
@@ -43,10 +44,13 @@ export default async function Home() {
   ];
 
   return (
-    <div className="flex flex-col mt-11 gap-3 max-w-7xl mx-auto p-6 bg-gradient-to-br from-pink-200 to-green-100 rounded-3xl shadow-xl">
-      <h1 className="text-3xl font-bold text-center mb-8 text-gray-800">
+    <div className="space-y-8 ">
+      <h1 className="text-4xl font-bold text-center text-gray-800">
         ยินดีต้อนรับ {session.pea.name}
       </h1>
+      <p className="text-xl text-center text-gray-600">
+        เลือกประเภทเอกสารที่คุณต้องการสร้าง
+      </p>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {formLinks.map((link, index) => (
           <Link key={index} href={link.href}>
