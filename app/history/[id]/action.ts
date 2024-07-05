@@ -7,7 +7,16 @@ import prisma from "@/lib/prisma"
 
 
 
-export async function changeStatus(statusName: string, documentId:string) {
+export async function changeStatus(preverse:{err:boolean,message:string},formData:FormData) {
+    const id = formData.get("id")?.toString()
+    const name = formData.get("name")?.toString()
+    const note = formData.get("note")?.toString()
+    if(!id || !name){
+        return {
+            err: true,
+            message: "กรุณากรอกข้อมูลให้ครบถ้วน"
+        }
+    }
     const session = await getServerSession(authOptions)
     if(!session || !session.pea){
         redirect ("/api/auth/signin")
@@ -20,38 +29,20 @@ export async function changeStatus(statusName: string, documentId:string) {
         }
     }
 
-    
-
     try{
-
         const status = await prisma.status.create({
             data : {
-                name: statusName,
+                name: name,
                 date: new Date(),
-                documentId,
+                documentId: id,
+                note,
                 updatedByUserId: session.pea.id
             }
         })
-        const document = await prisma.document.findFirst({
-            where: {
-                id: documentId
-            },
-            select: {
-                status:true,
-                id: true,
-                docNo: true
-              }
-        })
-        if(!document){
-            return {
-                err: true,
-                message: "ไม่พบเอกสารของคุณในฐานข้อมูล"
-            }
-        }
         await prisma.$disconnect()
         return {
             err: false,
-            message: "เปลี่ยนสถานะสำเร็จ"
+            message: "success"
         }
         
     }catch(e){
