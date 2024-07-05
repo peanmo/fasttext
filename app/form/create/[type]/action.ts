@@ -9,11 +9,6 @@ import { redirect } from 'next/navigation';
 
 const prisma = new PrismaClient();
 
-
-
-
-
-
 export async function addDocument(prevState: {message: string, err: boolean}, formData: FormData) {
   const session = await getServerSession(authOptions)
   if(!session || !session.pea){

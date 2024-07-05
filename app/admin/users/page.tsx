@@ -31,6 +31,7 @@ export default async function Page(){
             role: true
         }
     })
+    await prisma.$disconnect()
     return (
         <UserManagement sections={sections} users={users} />
     )
