@@ -14,6 +14,11 @@ export default async function Page(){
             id: true,
             name: true,
             shortName: true
+        },
+        where: {
+            name: {
+                not: "admin"
+            }
         }
     })
 

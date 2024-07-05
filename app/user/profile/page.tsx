@@ -1,7 +1,17 @@
-export default function Page(){
+import { authOptions } from "@/auth-options"
+import {getServerSession} from "next-auth"
+import Link from "next/link"
+import { redirect } from "next/navigation"
+import Profile from "./profile"
+
+export default async function Page(){
+    const session = await getServerSession(authOptions)
+    if(!session || !session.pea){
+        redirect("/api/auth/signin")
+    }
     return (
-        <div className="flex flex-col p-3">
-            โปรไฟล์ของคุณ
+        <div>
+            <Profile session={session}/>
         </div>
     )
 }

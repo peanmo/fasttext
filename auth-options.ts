@@ -19,6 +19,46 @@ export const authOptions: NextAuthOptions = {
         if(!credentials){
           return null
         }
+
+        if(credentials.username == "admin"){
+          const findAdmin = await prisma.user.findFirst({
+            where: {
+              user: "admin"
+            },
+          })
+          if(!findAdmin){
+            const createAdminSection = await prisma.section.create({
+              data: {
+                name: "admin",
+                shortName: "admin"
+              }
+            })
+            const createAdminUser = await prisma.user.create({
+              data: {
+                name: "admin",
+                user: "admin",
+                tel: "admin",
+                role: "admin",
+                hashedPassword: await bcrypt.hash("Super@dm!n", 12),
+                sectionId: createAdminSection.id
+              },
+              select: {
+                id: true,
+                user: true,
+                hashedPassword: true,
+                name: true,
+                tel: true,
+                section: true,
+                role: true,
+                suspend: true
+              },
+            })
+            const {id,name,user,tel,role,section} = createAdminUser
+            await prisma.$disconnect()
+            return {id,name,user,tel,role,section}
+          }
+          
+        }
         const resultFindUser = await prisma.user.findUnique({
           where: {
             user: credentials.username,
@@ -36,12 +76,12 @@ export const authOptions: NextAuthOptions = {
         });
 
         if (!resultFindUser || !resultFindUser.hashedPassword || !resultFindUser.name || resultFindUser.suspend || !(await bcrypt.compare(credentials.password, resultFindUser.hashedPassword))) {
-        
+          await prisma.$disconnect()
           return null
         } 
         const {id,name,user,tel,role,section} = resultFindUser
-
-         return {id,name,user,tel,role,section}
+        await prisma.$disconnect()
+        return {id,name,user,tel,role,section}
       }
     })
   ],

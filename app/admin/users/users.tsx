@@ -71,7 +71,6 @@ export default function UserManagement({sections,users}:{sections : Section[],us
                 <select name="role" defaultValue="user" required className="mb-4 p-2 border rounded-md shadow-sm">
                     <option value="user">ผู้ใช้งานทั่วไป</option>
                     <option value="admin">Admin</option>
-                    <option value="manager">ผู้จัดการ หรือผู้แทน</option>
                     <option value="checker">ผู้ตรวจสอบเอกสาร</option>
                 </select>
                 <span className="text-red-500 mb-4">{addUserState.message}</span>
