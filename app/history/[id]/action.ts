@@ -48,7 +48,7 @@ export async function changeStatus(statusName: string, documentId:string) {
                 message: "ไม่พบเอกสารของคุณในฐานข้อมูล"
             }
         }
-
+        await prisma.$disconnect()
         return {
             err: false,
             message: "เปลี่ยนสถานะสำเร็จ"
@@ -90,6 +90,7 @@ export async function deleteStatus(statusId:string) {
             id: statusId
         }
     })
+    await prisma.$disconnect()
     return {
         err: false,
         message: "ลบสถานะนี้สำเร็จ"

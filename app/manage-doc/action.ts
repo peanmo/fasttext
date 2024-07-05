@@ -72,8 +72,12 @@ export async function searchDocs(formData:FormData) {
                         user: true
                     }
                 }
+            },
+            orderBy: {
+                date: "asc"
             }
         })
+        await prisma.$disconnect()
         return docs
     }catch(e){
         console.log(e)

@@ -9,6 +9,7 @@ import { addDocument } from "./action";
 import { typeMapping } from "@/lib/doctype-map";
 import FormComponent from "@/app/component/form";
 
+
 const initialState = {
   message: "",
   err: true,
@@ -24,9 +25,8 @@ export default function FormDocument({ session, type }: FormDocumentProps) {
   const [state, formAction] = useFormState(addDocument, initialState);
   const formRef = useRef<HTMLFormElement>(null);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
+  const handleSubmit = (e: FormData) => {
+    const formData = e
     formData.append("type", type);
     formAction(formData);
 

@@ -22,7 +22,7 @@ export async function createSection(prevState: any, formData: FormData) {
         shortName
     }
   })
-
+  await prisma.$disconnect()
   return {
     message: 'เพิ่มแผนกสำเร็จ',
   }

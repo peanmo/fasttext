@@ -1,6 +1,7 @@
 "use client";
 
 import { RefObject } from "react";
+import { useFormStatus } from "react-dom";
 
 export default function FormComponent({
   ref,
@@ -15,7 +16,7 @@ export default function FormComponent({
   docNo
 }: {
   ref?: RefObject<HTMLFormElement>;
-  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  handleSubmit: (e: FormData) => void;
   state: { err: boolean; message: string };
   username: string;
   fromSection: string;
@@ -25,8 +26,9 @@ export default function FormComponent({
   amount?:string
   docNo?:string
 }) {
+  const {pending} = useFormStatus()
   return (
-    <form ref={ref} onSubmit={handleSubmit} className="space-y-4">
+    <form ref={ref} action={handleSubmit} className="space-y-4">
       <div className="form-group">
         <label
           htmlFor="docNo"
@@ -150,12 +152,16 @@ export default function FormComponent({
           className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
         />
       </div>
-      <button
-        type="submit"
-        className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
-      >
-        ยืนยัน
-      </button>
+      <SubmitButton/>
     </form>
   );
+}
+
+function SubmitButton() {
+  const { pending } = useFormStatus()
+  return (
+    <button type="submit" disabled={pending} className={`w-full ${pending?"bg-black hover:bg-black ":" bg-blue-500 hover:bg-blue-600 "} text-white py-2 px-4 rounded-md `}>
+      {pending?"กำลังส่ง":"ยืนยัน"}
+    </button>
+  )
 }

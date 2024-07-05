@@ -73,6 +73,7 @@ export const authOptions: NextAuthOptions = {
           suspend: true
         }
       })
+      await prisma.$disconnect()
       if(!findUser || findUser.suspend){
         return session
       }

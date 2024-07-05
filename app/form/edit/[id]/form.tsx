@@ -23,9 +23,8 @@ export default function FormDocument({
   const [state, formAction] = useFormState(editDocument, initialState);
   const formRef = useRef<HTMLFormElement>(null); // สร้าง ref เพื่อเก็บอ้างอิงฟอร์ม
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
+  const handleSubmit = (e: FormData) => {
+    const formData = e
     formData.append("id", doc.id);
     formAction(formData);
 

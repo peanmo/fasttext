@@ -189,6 +189,7 @@ async function getDocsByLatestStatus(status:string,type:string):Promise<DocsWith
             }
           ]
     ).toArray() as unknown as DocsWithStatus[]
+    await mongoClient.close()
     return docs
 }
 
@@ -249,6 +250,7 @@ export async function setNewStatus(formData:FormData):Promise<{err:boolean,messa
   const resultCreate = await prisma.status.createMany({
     data: create
   })
+  await prisma.$disconnect()
   return {
     err: false,
     message: "เปลี่ยนสถานะสำเร็จ"

@@ -69,7 +69,7 @@ export async function createUser(prevState: any, formData: FormData) {
         sectionId,
     }
   })
-
+  await prisma.$disconnect()
   return {
     message: 'ลงทะเบียนสำเร็จ',
   }
@@ -91,6 +91,7 @@ export async function changeUserRole(role:$Enums.Role,id:string) {
         role: true
       }
     })
+    await prisma.$disconnect()
     return {
       err: false,
       message: `เปลี่ยนประเภทผู้ใช้งานของ  ${result.name}  สำเร็จ`
@@ -115,6 +116,7 @@ export async function changeUserSuspend(id:string) {
     }
   })
   if(!user){
+    await prisma.$disconnect()
     return {
       err: true,
       message: "ไม่พบผู้ใช้งาน"
@@ -133,6 +135,7 @@ export async function changeUserSuspend(id:string) {
       suspend: true
     }
   })
+  await prisma.$disconnect()
   return {
     err: false,
     message: `ทำให้ ${result.name} ${result.suspend?" ถูกระงับการใช้งาน":" สามารถใช้งานได้ปกติ"}`
@@ -150,6 +153,7 @@ export async function resetPassword(id:string) {
     }
   })
   if(!user){
+    await prisma.$disconnect()
     return {
       err: true,
       message: "ไม่พบผู้ใช้งาน"
@@ -167,6 +171,7 @@ export async function resetPassword(id:string) {
       name: true
     }
   })
+  await prisma.$disconnect()
   return {
     err: false,
     message: `รีเซ็ตรหัสผ่านของ ${result.name} เป็น 87654321`

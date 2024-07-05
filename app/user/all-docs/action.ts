@@ -54,6 +54,7 @@ export async function searchDocs(formData:FormData) {
                 }
             }
         })
+        await prisma.$disconnect()
         return docs
     }catch(e){
         console.log(e)
