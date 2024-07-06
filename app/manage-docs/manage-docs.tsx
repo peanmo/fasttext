@@ -8,39 +8,40 @@ import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 import { XCircleIcon } from "@heroicons/react/24/solid";
 
-// กำหนดค่าเริ่มต้นสำหรับ state ของเอกสาร
 const initialDocs: { docs: DocsWithStatus[]; nextStatus: string[] } = {
   docs: [],
   nextStatus: [],
 };
 
 export default function ManageDocs() {
-  // State สำหรับเก็บข้อมูลเอกสารและสถานะที่สามารถเปลี่ยนได้
   const [docsAndNextStatus, setDocsAndNextStatus] = useState(initialDocs);
-  // State สำหรับเก็บ ID ของเอกสารที่ถูกเลือก
   const [selectedId, setSelectedId] = useState<string[]>([]);
-  // State สำหรับเก็บ ID ของเอกสารที่ไม่ถูกเลือก
   const [deselectedId, setDeselectedId] = useState<string[]>([]);
-  // Ref สำหรับฟอร์มค้นหา
   const formQueryRef = useRef<HTMLFormElement>(null);
-  // Hook สำหรับ navigation
   const router = useRouter();
-  // State สำหรับแสดงสถานะ loading
   const [isLoading, setIsLoading] = useState(false);
 
-  // ฟังก์ชันสำหรับเลือกเอกสาร
   const handleSelect = (id: string) => {
-    setSelectedId([...selectedId, id]);
-    setDeselectedId(deselectedId.filter((val) => val != id));
+    setSelectedId(prev => [...prev, id]);
+    setDeselectedId(prev => prev.filter(val => val !== id));
   };
 
-  // ฟังก์ชันสำหรับยกเลิกการเลือกเอกสาร
   const handleDeselect = (id: string) => {
-    setDeselectedId([...deselectedId, id]);
-    setSelectedId(selectedId.filter((val) => val != id));
+    setDeselectedId(prev => [...prev, id]);
+    setSelectedId(prev => prev.filter(val => val !== id));
   };
 
-  // ฟังก์ชันสำหรับส่งข้อมูลการเปลี่ยนสถานะ
+  const handleSelectAll = () => {
+    const allIds = docsAndNextStatus.docs.map(doc => doc.id);
+    setSelectedId(allIds);
+    setDeselectedId([]);
+  };
+
+  const handleDeselectAll = () => {
+    setSelectedId([]);
+    setDeselectedId(docsAndNextStatus.docs.map(doc => doc.id));
+  };
+
   const handleSubmitStatus = async (e: FormData) => {
     let form = e;
     for (const id of selectedId) {
@@ -50,14 +51,12 @@ export default function ManageDocs() {
     if (result.err) {
       console.log(result.message);
     } else {
-      // แสดง SweetAlert2 เมื่อเปลี่ยนสถานะสำเร็จ
       Swal.fire({
         icon: "success",
         title: "เปลี่ยนสถานะสำเร็จ",
         text: "สถานะของเอกสารได้ถูกอัพเดทแล้ว",
       });
     }
-    // รีเซ็ต state และฟอร์มหลังจากส่งข้อมูล
     setSelectedId([]);
     setDeselectedId([]);
     setDocsAndNextStatus(initialDocs);
@@ -67,31 +66,26 @@ export default function ManageDocs() {
     router.refresh();
   };
 
-  // ฟังก์ชันสำหรับค้นหาเอกสาร
   const handleQuery = async (e: FormData) => {
     setIsLoading(true);
     setDocsAndNextStatus(await searchDocsByStatus(e));
     setIsLoading(false);
   };
 
-  // useEffect สำหรับอัพเดท state ของเอกสารที่ไม่ถูกเลือกเมื่อข้อมูลเอกสารมีการเปลี่ยนแปลง
   useEffect(() => {
     let ids = docsAndNextStatus.docs.map((val) => val.id);
     setDeselectedId(ids);
     setSelectedId([]);
   }, [docsAndNextStatus]);
 
-  // useMemo สำหรับคำนวณเอกสารที่ถูกเลือก
   const selectedDocs = useMemo(() => {
     return docsAndNextStatus.docs.filter((val) => selectedId.includes(val.id));
   }, [selectedId, docsAndNextStatus.docs]);
 
-  // useMemo สำหรับคำนวณเอกสารที่ไม่ถูกเลือก
   const deselectedDocs = useMemo(() => {
     return docsAndNextStatus.docs.filter((val) => !selectedId.includes(val.id));
   }, [selectedId, docsAndNextStatus.docs]);
 
-  // ฟังก์ชันสำหรับ render การ์ดเอกสาร
   const renderDocCard = (doc: DocsWithStatus, isSelected: boolean) => (
     <div
       key={doc.id}
@@ -133,7 +127,6 @@ export default function ManageDocs() {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 ">
-      {/* ส่วนฟอร์มค้นหา */}
       <div className="md:col-span-2 bg-white p-6 rounded-xl shadow-md transition duration-300 hover:shadow-xl">
         <h2 className="text-2xl font-bold mb-4 text-gray-800">จัดการเอกสาร</h2>
         <form ref={formQueryRef} action={handleQuery} className="space-y-4">
@@ -187,28 +180,42 @@ export default function ManageDocs() {
         </form>
       </div>
 
-      {/* ส่วนแสดงผลการค้นหา */}
       {isLoading ? (
         <div className="md:col-span-2 flex justify-center items-center h-32">
           <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500"></div>
         </div>
       ) : (
         <>
-          {/* ส่วนแสดงเอกสารที่ยังไม่ได้เลือก */}
           <div className="space-y-4">
-            <h3 className="text-xl font-semibold mb-3">
-              เอกสารที่ยังไม่ได้เลือก
-            </h3>
+            <div className="flex justify-between items-center mb-3">
+              <h3 className="text-xl font-semibold">เอกสารที่ยังไม่ได้เลือก</h3>
+              {deselectedDocs.length > 0 && (
+                <button
+                  onClick={handleSelectAll}
+                  className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition duration-300 ease-in-out"
+                >
+                  เลือกทั้งหมด
+                </button>
+              )}
+            </div>
             {deselectedDocs.map((doc) => renderDocCard(doc, false))}
           </div>
 
-          {/* ส่วนแสดงเอกสารที่เลือกแล้ว */}
           <div className="space-y-4">
-            <h3 className="text-xl font-semibold mb-3">เอกสารที่เลือกแล้ว</h3>
+            <div className="flex justify-between items-center mb-3">
+              <h3 className="text-xl font-semibold">เอกสารที่เลือกแล้ว</h3>
+              {selectedDocs.length > 0 && (
+                <button
+                  onClick={handleDeselectAll}
+                  className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition duration-300 ease-in-out"
+                >
+                  ยกเลิกการเลือกทั้งหมด
+                </button>
+              )}
+            </div>
             {selectedDocs.map((doc) => renderDocCard(doc, true))}
           </div>
 
-          {/* ส่วนฟอร์มเปลี่ยนสถานะ */}
           {selectedDocs.length !== 0 &&
             docsAndNextStatus.nextStatus.length !== 0 && (
               <div className="md:col-span-2 bg-white p-6 rounded-xl shadow-md">
