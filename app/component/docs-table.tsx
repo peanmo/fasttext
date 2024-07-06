@@ -35,7 +35,7 @@ export default function DocumentTable({
       return (
         <Link
           href={`/form/edit/${row.id}`}
-          className="inline-flex items-center justify-center bg-green-600 hover:bg-green-300 text-white font-bold py-2 px-4 rounded shadow-lg transition-all duration-300"
+          className="inline-flex items-center justify-center bg-greencut hover:bg-greencut1 text-white font-bold py-2 px-4 rounded shadow-lg transition-all duration-300"
         >
           <PencilSquareIcon className="h-5 w-5 mr-1" />
           รอการแก้ไข

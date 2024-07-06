@@ -10,6 +10,8 @@ const config: Config = {
     extend: {
       colors: {
         pea: "#7f3f98", // สีดำ
+        greencut: "#7bae6a", 
+        greencut1: "#397d54", 
       },
     },
   },
