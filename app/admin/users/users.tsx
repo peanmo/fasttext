@@ -1,6 +1,6 @@
 'use client'
 
-import { useFormState } from 'react-dom'
+import { useFormState, useFormStatus } from 'react-dom'
 import { changeUserRole, changeUserSuspend, createUser, resetPassword } from './action'
 import { $Enums, Section, User } from '@prisma/client'
 import { ChangeEvent } from 'react'
@@ -74,7 +74,7 @@ export default function UserManagement({sections,users}:{sections : Section[],us
                     <option value="checker">ผู้ตรวจสอบเอกสาร</option>
                 </select>
                 <span className="text-red-500 mb-4">{addUserState.message}</span>
-                <button type='submit' className="bg-blue-500 text-white p-2 rounded-lg shadow-md hover:bg-blue-600">Sign up</button>
+                <SubmitButton/>
             </form>
             <p>รายชื่อผู้ใช้งาน</p>
             <table>
@@ -114,3 +114,12 @@ export default function UserManagement({sections,users}:{sections : Section[],us
         </main>
     )
 }
+
+function SubmitButton() {
+    const { pending } = useFormStatus()
+    return (
+      <button type="submit" disabled={pending} className={`w-full ${pending?"bg-black hover:bg-black ":" bg-blue-500 hover:bg-blue-600 "} text-white py-2 px-4 rounded-md `}>
+        {pending?"กำลังส่ง":"ยืนยัน"}
+      </button>
+    )
+  }

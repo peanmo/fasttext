@@ -18,7 +18,7 @@ import {
   CogIcon,
   DocumentDuplicateIcon,
   CheckBadgeIcon,
-  InformationCircleIcon
+  InformationCircleIcon,
 } from '@heroicons/react/24/solid';
 
 async function getDocument(id: string) {

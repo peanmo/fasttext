@@ -52,17 +52,17 @@ export default function ChangeStatus({documentId,nextStatus}:{documentId:string,
         }
     },[state])
     return (
-        <form ref={formRef} action={handleChangeStatus} className="flex flex-col gap-1">
-            <label htmlFor="name"> เปลี่ยนสถานะเอกสาร </label>
-            <select name="name" defaultValue={nextStatus[0]} required >
+        <form ref={formRef} action={handleChangeStatus} className="flex flex-col bg-white p-6 rounded-lg shadow-md mb-8">
+            <label className="mb-2" htmlFor="name"> เปลี่ยนสถานะเอกสาร </label>
+            <select className="mb-4 p-2 border rounded-md shadow-sm" name="name" defaultValue={nextStatus[0]} required >
                 {nextStatus.map((val,i)=>{
                     return (
                         <option value={val} key={i}>{val}</option>
                     )
                 })}
             </select>
-            <label htmlFor="note">หมายเหตุ</label>
-            <input type="text" name="note" defaultValue="-"/>
+            <label className="mb-2" htmlFor="note">หมายเหตุ</label>
+            <input className="mb-4 p-2 border rounded-md shadow-sm" type="text" name="note" defaultValue="-"/>
             {state.err&&<span className="text-red-400">{state.message}</span>}
             <SubmitButton />
         </form>
