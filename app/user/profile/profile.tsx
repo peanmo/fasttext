@@ -7,6 +7,7 @@ import { changePassword } from "./action";
 import {useRouter} from "next/navigation"
 import { RefAttributes, useEffect, useRef } from "react";
 import { Section } from "@prisma/client";
+import SubmitButton from "@/app/component/submit-button";
 
 const initialState = {
     err: false,
@@ -76,12 +77,3 @@ export default function Profile({session,sections}:{session:Session,sections:Sec
         </div>
     )
 }
-
-function SubmitButton() {
-    const { pending } = useFormStatus()
-    return (
-      <button type="submit" disabled={pending} className={`w-full ${pending?"bg-black hover:bg-black ":" bg-blue-500 hover:bg-blue-600 "} text-white py-2 px-4 rounded-md `}>
-        {pending?"กำลังส่ง":"ยืนยัน"}
-      </button>
-    )
-  }

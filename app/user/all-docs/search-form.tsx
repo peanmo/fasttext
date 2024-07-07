@@ -6,6 +6,7 @@ import { Session } from "next-auth";
 import { useMemo, useState } from "react";
 import { DocumentWithStatus } from "@/lib/types"
 import { searchDocs } from "./action";
+import SubmitButton from "@/app/component/submit-button";
 
 
 export default function SearchDocs({ session }: { session: Session }) {
@@ -72,7 +73,7 @@ export default function SearchDocs({ session }: { session: Session }) {
             </option>
           ))}
         </select>
-        <button type='submit'>ค้นหา</button>
+        <SubmitButton label="ค้นหา" pendingLabel="กำลังค้นหา"/>
       </form>
       <DocumentTable session={session} documentsWithStatus={docs} />
     </div>

@@ -93,7 +93,7 @@ export default function LoadingFormComponent() {
             <input
             name="name"
             type="text"
-            defaultValue=""
+            disabled
             required
             className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
             />
@@ -108,7 +108,7 @@ export default function LoadingFormComponent() {
             <input
             name="amount"
             type="text"
-            defaultValue=""
+            disabled
             required
             className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
             />
@@ -122,7 +122,7 @@ export default function LoadingFormComponent() {
             </label>
             <input
             name="note"
-            defaultValue=""
+            disabled
             type="text"
             className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
             />
@@ -135,7 +135,7 @@ export default function LoadingFormComponent() {
 
 function SubmitButton() {
   return (
-    <button type="submit" className={`w-full  bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md `}>
+    <button disabled type="submit" className={`w-full  bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md `}>
       ยืนยัน
     </button>
   )

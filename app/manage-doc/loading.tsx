@@ -23,6 +23,7 @@ export default function Loading() {
           เริ่มต้น
         </label>
         <input
+          disabled
           name="startDate"
           type="date"
           required
@@ -36,6 +37,7 @@ export default function Loading() {
           สิ้นสุด
         </label>
         <input
+          disabled
           name="endDate"
           type="date"
           required
@@ -49,6 +51,7 @@ export default function Loading() {
           ชื่อพนักงาน
         </label>
         <input
+          disabled
           name="name"
           type="text"
           className="p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -61,6 +64,7 @@ export default function Loading() {
           ประเภทเอกสาร
         </label>
         <select
+          disabled
           name="type"
           defaultValue="all"
           className="p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -76,6 +80,7 @@ export default function Loading() {
           เริ่มต้น
         </label>
         <input
+          disabled
           name="startDocNo"
           defaultValue="1"
           type="number"
@@ -89,6 +94,7 @@ export default function Loading() {
           สิ้นสุด
         </label>
         <input
+          disabled
           name="endDocNo"
           type="number"
           className="p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -101,6 +107,7 @@ export default function Loading() {
           ปี
         </label>
         <input
+          disabled
           name="year"
           type="number"
           required
@@ -108,6 +115,7 @@ export default function Loading() {
         />
 
         <button
+          disabled
           type="submit"
           className="w-full md:w-auto px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
         >

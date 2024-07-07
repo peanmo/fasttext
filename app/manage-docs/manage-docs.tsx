@@ -7,6 +7,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 import { XCircleIcon } from "@heroicons/react/24/solid";
+import SubmitButton from "../component/submit-button";
 
 const initialDocs: { docs: DocsWithStatus[]; nextStatus: string[] } = {
   docs: [],
@@ -174,9 +175,7 @@ export default function ManageDocs() {
             </select>
           </div>
 
-          <button className="w-full p-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
-            ค้นหาเอกสาร
-          </button>
+          <SubmitButton label="ค้นหาเอกสาร" pendingLabel="กำลังค้นหา" />
         </form>
       </div>
 

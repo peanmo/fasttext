@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { changeStatus } from "./action";
 import { useRouter } from "next/navigation"
 import { useFormState, useFormStatus } from "react-dom";
+import SubmitButton from "@/app/component/submit-button";
 
 type DocwithStatus = {
     status: {
@@ -69,11 +70,3 @@ export default function ChangeStatus({documentId,nextStatus}:{documentId:string,
     )
 }
 
-function SubmitButton() {
-    const { pending } = useFormStatus()
-    return (
-      <button type="submit" disabled={pending} className={`w-full ${pending?"bg-black hover:bg-black ":" bg-blue-500 hover:bg-blue-600 "} text-white py-2 px-4 rounded-md `}>
-        {pending?"กำลังส่ง":"ยืนยัน"}
-      </button>
-    )
-  }
