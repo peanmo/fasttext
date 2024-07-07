@@ -9,6 +9,34 @@ import {
   ShoppingCartIcon,
   ReceiptRefundIcon,
 } from "@heroicons/react/24/outline";
+import { Suspense } from "react";
+
+const formLinks = [
+  {
+    href: "/form/create/benefit",
+    label: "สวัสดิการ",
+    icon: CurrencyDollarIcon,
+    color: "bg-blue-500 hover:bg-blue-600",
+  },
+  {
+    href: "/form/create/procurement",
+    label: "จัดซื้อจัดจ้าง",
+    icon: ShoppingCartIcon,
+    color: "bg-green-500 hover:bg-green-600",
+  },
+  {
+    href: "/form/create/thousand",
+    label: "จัดซื้อจัดจ้างเกิน 1 แสน",
+    icon: DocumentTextIcon,
+    color: "bg-yellow-500 hover:bg-yellow-600",
+  },
+  {
+    href: "/form/create/guarantee",
+    label: "คืนค่าประกัน",
+    icon: ReceiptRefundIcon,
+    color: "bg-purple-500 hover:bg-purple-600",
+  },
+];
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
@@ -16,37 +44,10 @@ export default async function Home() {
     redirect("/api/auth/signin");
   }
 
-  const formLinks = [
-    {
-      href: "/form/create/benefit",
-      label: "สวัสดิการ",
-      icon: CurrencyDollarIcon,
-      color: "bg-blue-500 hover:bg-blue-600",
-    },
-    {
-      href: "/form/create/procurement",
-      label: "จัดซื้อจัดจ้าง",
-      icon: ShoppingCartIcon,
-      color: "bg-green-500 hover:bg-green-600",
-    },
-    {
-      href: "/form/create/thousand",
-      label: "จัดซื้อจัดจ้างเกิน 1 แสน",
-      icon: DocumentTextIcon,
-      color: "bg-yellow-500 hover:bg-yellow-600",
-    },
-    {
-      href: "/form/create/guarantee",
-      label: "คืนค่าประกัน",
-      icon: ReceiptRefundIcon,
-      color: "bg-purple-500 hover:bg-purple-600",
-    },
-  ];
-
   return (
     <div className="space-y-8 ">
       <h1 className="text-4xl font-bold text-center text-gray-800">
-        ยินดีต้อนรับ {session.pea.name}
+        ยินดีต้อนรับ <Suspense fallback={''} >{session.pea.name}</Suspense>
       </h1>
       <p className="text-xl text-center text-gray-600">
         เลือกประเภทเอกสารที่คุณต้องการสร้าง
