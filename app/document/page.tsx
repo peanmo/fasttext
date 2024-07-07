@@ -26,45 +26,45 @@ export default async function Page() {
         ยินดีต้อนรับ {session.pea.name}
       </h1>
 
-      <div className="flex items-center p-4 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 transition duration-300">
+      <Link href="/user/waiting-docs" className="flex items-center p-4 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 transition duration-300">
         <p className="text-4xl mr-4">📥</p>
-        <Link href="/user/waiting-docs">
+        <div>
           <div className="text-left">
             <h2 className="text-lg font-bold">รอเอกสารต้นฉบับ</h2>
             <p>จำนวน {typeDocsCount.waitingDocs} ฉบับ</p>
           </div>
-        </Link>
-      </div>
+        </div>
+      </Link>
 
-      <div className="flex items-center p-4 bg-green-500 text-white rounded-lg shadow hover:bg-green-600 transition duration-300">
+      <Link href="/user/returned-docs" className="flex items-center p-4 bg-green-500 text-white rounded-lg shadow hover:bg-green-600 transition duration-300">
         <p className="text-4xl mr-4">📤</p>
-        <Link href="/user/returned-docs">
+        <div>
           <div className="text-left">
             <h2 className="text-lg font-bold">เอกสารส่งคืน/ตีกลับ</h2>
             <p>จำนวน {typeDocsCount.returnedDocs} ฉบับ</p>
           </div>
-        </Link>
-      </div>
+        </div>
+      </Link>
 
-      <div className="flex items-center p-4 bg-red-500 text-white rounded-lg shadow hover:bg-red-600 transition duration-300">
+      <Link href="/user/cancel-docs" className="flex items-center p-4 bg-red-500 text-white rounded-lg shadow hover:bg-red-600 transition duration-300">
         <p className="text-4xl mr-4">❌</p>
-        <Link href="/user/cancel-docs">
+        <div>
           <div className="text-left">
             <h2 className="text-lg font-bold">เอกสารถูกยกเลิก</h2>
             <p>จำนวน {typeDocsCount.cancelDocs} ฉบับ</p>
           </div>
-        </Link>
-      </div>
+        </div>
+      </Link>
 
-      <div className="flex items-center p-4 bg-gray-500 text-white rounded-lg shadow hover:bg-gray-600 transition duration-300">
+      <Link href="/user/all-docs" className="flex items-center p-4 bg-gray-500 text-white rounded-lg shadow hover:bg-gray-600 transition duration-300">
         <p className="text-4xl mr-4">📂</p>
-        <Link href="/user/all-docs">
+        <div>
           <div className="text-left">
             <h2 className="text-lg font-bold">เอกสารของคุณทั้งหมด</h2>
             <p>จำนวน {typeDocsCount.totalDocs} ฉบับ</p>
           </div>
-        </Link>
-      </div>
+        </div>
+      </Link>
     </div>
   );
 }
