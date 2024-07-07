@@ -2,6 +2,7 @@
 
 import { useFormState } from 'react-dom'
 import { createSection } from './action'
+import SubmitButton from '@/app/component/submit-button'
 
 const initialState = {
     message: '',
@@ -18,7 +19,7 @@ export default function SectionsManager({sections}:{sections:{id:string,name:str
                 <label htmlFor="shortName" className="mb-2">ตัวย่อแผนก : </label>
                 <input type="text" name="shortName" required className="mb-4 p-2 border rounded-md shadow-sm"/>
                 <span className="text-red-500 mb-4">{addSectionState.message}</span>
-                <button type='submit' className="bg-green-500 text-white p-2 rounded-lg shadow-md hover:bg-green-600">เพิ่มแผนก</button>
+                <SubmitButton label='เพิ่มแผนก' pendingLabel='กำลังเพิ่มแผนก' />
             </form>
             <p className="text-2xl font-bold mb-6">รายการแผนกที่มี</p>
             <div className="bg-white p-6 rounded-lg shadow-md">

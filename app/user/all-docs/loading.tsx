@@ -1,3 +1,5 @@
+import LoadingButton from "@/app/component/loading-button";
+
 export default function Loading(){
     return (
         <div className="flex flex-col gap-3">
@@ -11,33 +13,36 @@ export default function Loading(){
                 เริ่มต้น
                 </label>
                 <input
+                disabled
                 required
                 name="startDate"
                 type="date"
-                className="border rounded-md p-2"
+                className="border rounded-md p-2 bg-gray-200 animate-pulse"
                 />
 
                 <label htmlFor="endDate" className="text-gray-700">
                 สิ้นสุด
                 </label>
                 <input
+                disabled
                 required
                 name="endDate"
                 type="date"
-                className="border rounded-md p-2"
+                className="border rounded-md p-2 bg-gray-200 animate-pulse"
                 />
 
                 <label htmlFor="type" className="text-gray-700">
                 ประเภทเอกสาร
                 </label>
                 <select
+                disabled
                 name="type"
                 defaultValue="all"
-                className="border rounded-md p-2"
+                className="border rounded-md p-2 bg-gray-200 animate-pulse"
                 >
                 <option value="all">ทั้งหมด</option>
                 </select>
-                <button type='submit'>ค้นหา</button>
+                <LoadingButton label="ค้นหา"/>
             </form>
             </div>     
         </div>

@@ -1,3 +1,5 @@
+import LoadingButton from "../component/loading-button";
+
 export default function Loading() {
   return (
     <div>
@@ -18,7 +20,7 @@ export default function Loading() {
                 defaultValue=""
                 name="status"
                 required
-                className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-200 animate-pulse"
               >
                 <option value="">โปรดเลือก....</option>
               </select>
@@ -35,18 +37,13 @@ export default function Loading() {
                 defaultValue="all"
                 name="type"
                 required
-                className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-200 animate-pulse"
               >
                 <option value="all">ทั้งหมด</option>
               </select>
             </div>
 
-            <button
-              disabled
-              className="w-full p-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-            >
-              ค้นหาเอกสาร
-            </button>
+            <LoadingButton label="ค้นหาเอกสาร"/>
           </form>
         </div>
       </div>

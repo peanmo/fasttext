@@ -1,4 +1,5 @@
 import { StarIcon, DocumentIcon } from "@heroicons/react/24/outline";
+import LoadingButton from "../component/loading-button";
 
 export default function Loading() {
   return (
@@ -27,7 +28,7 @@ export default function Loading() {
           name="startDate"
           type="date"
           required
-          className="p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-200 animate-pulse"
         />
 
         <label
@@ -41,7 +42,7 @@ export default function Loading() {
           name="endDate"
           type="date"
           required
-          className="p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-200 animate-pulse"
         />
 
         <label
@@ -54,7 +55,7 @@ export default function Loading() {
           disabled
           name="name"
           type="text"
-          className="p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-200 animate-pulse"
         />
 
         <label
@@ -67,7 +68,7 @@ export default function Loading() {
           disabled
           name="type"
           defaultValue="all"
-          className="p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-200 animate-pulse"
         >
           <option value="all">ทั้งหมด</option>
         </select>
@@ -75,7 +76,7 @@ export default function Loading() {
         <p className="text-sm font-medium text-gray-700">เลขที่เอกสาร</p>
         <label
           htmlFor="startDocNo"
-          className="block text-sm font-medium text-gray-700"
+          className="block text-sm font-medium text-gray-700 bg-gray-200 animate-pulse"
         >
           เริ่มต้น
         </label>
@@ -84,7 +85,7 @@ export default function Loading() {
           name="startDocNo"
           defaultValue="1"
           type="number"
-          className="p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-200 animate-pulse"
         />
 
         <label
@@ -97,7 +98,7 @@ export default function Loading() {
           disabled
           name="endDocNo"
           type="number"
-          className="p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-200 animate-pulse"
         />
 
         <label
@@ -111,32 +112,10 @@ export default function Loading() {
           name="year"
           type="number"
           required
-          className="p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-200 animate-pulse"
         />
 
-        <button
-          disabled
-          type="submit"
-          className="w-full md:w-auto px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-        >
-          <span className="flex items-center justify-center">
-            <svg
-              className="w-5 h-5 mr-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              />
-            </svg>
-            ค้นหา
-          </span>
-        </button>
+        <LoadingButton label="ค้นหา"/>
       </form>
     </div>
     </div>

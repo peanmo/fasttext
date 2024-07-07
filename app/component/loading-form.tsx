@@ -1,3 +1,5 @@
+import LoadingButton from "./loading-button";
+
 export default function LoadingFormComponent() {
   return (
     <div className="max-w-md mx-auto bg-white p-8 rounded-xl shadow-2xl">
@@ -17,7 +19,7 @@ export default function LoadingFormComponent() {
             value=""
             disabled
             required
-            className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+            className="mt-1 block w-full p-2 border border-gray-300 rounded-md bg-gray-200 animate-pulse"
             />
         </div>
         <div className="form-group">
@@ -33,7 +35,7 @@ export default function LoadingFormComponent() {
             value=""
             disabled
             required
-            className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+            className="mt-1 block w-full p-2 border border-gray-300 rounded-md bg-gray-200 animate-pulse"
             />
         </div>
         <div className="form-group">
@@ -49,7 +51,7 @@ export default function LoadingFormComponent() {
             value=""
             disabled
             required
-            className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+            className="mt-1 block w-full p-2 border border-gray-300 rounded-md bg-gray-200 animate-pulse"
             />
         </div>
         <div className="form-group">
@@ -65,7 +67,7 @@ export default function LoadingFormComponent() {
             value=""
             disabled
             required
-            className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+            className="mt-1 block w-full p-2 border border-gray-300 rounded-md bg-gray-200 animate-pulse"
             />
         </div>
         <div className="form-group">
@@ -80,7 +82,7 @@ export default function LoadingFormComponent() {
             type="text"
             value="ผสน."
             disabled
-            className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+            className="mt-1 block w-full p-2 border border-gray-300 rounded-md bg-gray-200 animate-pulse"
             />
         </div>
         <div className="form-group">
@@ -95,7 +97,7 @@ export default function LoadingFormComponent() {
             type="text"
             disabled
             required
-            className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+            className="mt-1 block w-full p-2 border border-gray-300 rounded-md bg-gray-200 animate-pulse"
             />
         </div>
         <div className="form-group">
@@ -110,7 +112,7 @@ export default function LoadingFormComponent() {
             type="text"
             disabled
             required
-            className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+            className="mt-1 block w-full p-2 border border-gray-300 rounded-md bg-gray-200 animate-pulse"
             />
         </div>
         <div className="form-group">
@@ -124,19 +126,11 @@ export default function LoadingFormComponent() {
             name="note"
             disabled
             type="text"
-            className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+            className="mt-1 block w-full p-2 border border-gray-300 rounded-md bg-gray-200 animate-pulse"
             />
         </div>
-        <SubmitButton/>
+        <LoadingButton/>
         </form>
     </div>
   );
-}
-
-function SubmitButton() {
-  return (
-    <button disabled type="submit" className={`w-full  bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md `}>
-      ยืนยัน
-    </button>
-  )
 }
